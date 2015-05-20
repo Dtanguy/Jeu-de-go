@@ -2,8 +2,9 @@ package jeugo;
 
 public class Game {
 
+	Fenetre fenetre;
 	public Game(){
-		 System.out.println("Hello, World");		
+		 fenetre= new Fenetre();
 	}
 	
 }
