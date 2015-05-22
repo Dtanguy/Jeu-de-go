@@ -3,11 +3,13 @@ package jeugo;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.awt.Toolkit;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -54,6 +56,17 @@ public class Plateau extends JComponent{
 		    }
 		    g = img.getGraphics();
 		    g.drawImage(img,0, 0, new JLayeredPane());
+		
+		
+		 Graphics2D g2 = (Graphics2D) g;
+		 Image img1 = Toolkit.getDefaultToolkit().getImage("ressource/Goban.png");
+		 g2.drawImage(img1, 10, 10, this);
+		 g2.finalize();
+		
+		 /*
+		super.paintComponent(g);
+	    g.setColor(Color.BLUE);
+	    g.fillRect(0, 0, 500, 500);*/	    	       
 	}
 
 	
