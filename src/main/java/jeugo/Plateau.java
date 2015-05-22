@@ -5,8 +5,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
 
 public class Plateau extends JComponent{
 	
@@ -41,9 +46,14 @@ public class Plateau extends JComponent{
 	
 	//Fonction de dessin du motif
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-	    g.setColor(Color.BLUE);
-	    g.fillRect(0, 0, 500, 500);	    	       
+
+		    BufferedImage img = null;
+		    try {
+		        img = ImageIO.read(new File("ressource/goban.png"));
+		    } catch (IOException e) {
+		    }
+		    g = img.getGraphics();
+		    g.drawImage(img,0, 0, new JLayeredPane());
 	}
 
 	
