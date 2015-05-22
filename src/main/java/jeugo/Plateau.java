@@ -5,15 +5,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.awt.Toolkit;
 
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-import javax.swing.JLayeredPane;
 
 public class Plateau extends JComponent{
 	
@@ -26,8 +20,8 @@ public class Plateau extends JComponent{
 	//Constructeur
 	public Plateau(int x, int y) {
 		size = new Point(x,y);
-		 this.setLocation(x, y);
-	        this.setSize(x, y);
+		//this.setLocation(x, y);
+	    //this.setSize(x, y);
 		repaint();
 	}
 	
@@ -48,21 +42,22 @@ public class Plateau extends JComponent{
 	
 	//Fonction de dessin du motif
 	public void paintComponent(Graphics g) {
-
-		    BufferedImage img = null;
-		    try {
-		        img = ImageIO.read(new File("ressource/goban.png"));
-		    } catch (IOException e) {
-		    }
-		    g = img.getGraphics();
-		    g.drawImage(img,0, 0, new JLayeredPane());
-		
-		
+				
 		 Graphics2D g2 = (Graphics2D) g;
-		 Image img1 = Toolkit.getDefaultToolkit().getImage("ressource/Goban.png");
+		/* Image img1 = Toolkit.getDefaultToolkit().getImage("ressource/Goban.png");
 		 g2.drawImage(img1, 10, 10, this);
 		 g2.finalize();
-		
+		*/
+		 g.setColor(Color.BLACK);
+		 g.drawLine(10, 10, 800, 10);
+		 for (int i=0; i < size.x; i++) {
+			for (int j=0; j < size.y; j++) {
+				 Image img1 = Toolkit.getDefaultToolkit().getImage("ressource/texture_case.png");
+				 g2.drawImage(img1, 10+i*35, 10+j*35, this);
+				 g2.finalize();
+			}
+		}	
+		 
 		 /*
 		super.paintComponent(g);
 	    g.setColor(Color.BLUE);
