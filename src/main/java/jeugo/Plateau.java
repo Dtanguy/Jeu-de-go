@@ -48,16 +48,28 @@ public class Plateau extends JComponent{
 		 g2.drawImage(img1, 10, 10, this);
 		 g2.finalize();
 		*/
-		 g.setColor(Color.BLACK);
-		 g.drawLine(10, 10, 800, 10);
+		 
+		
+		 
 		 for (int i=0; i < size.x; i++) {
 			for (int j=0; j < size.y; j++) {
+				
+				
 				 Image img1 = Toolkit.getDefaultToolkit().getImage("ressource/texture_case.png");
 				 g2.drawImage(img1, 10+i*35, 10+j*35, this);
 				 g2.finalize();
 			}
 		}	
-		 
+		
+		 g.setColor(Color.BLACK);
+		 for (int i=0; i <= size.x; i++) {
+			for (int j=0; j <= size.y; j++) {
+				
+				 g.drawLine(9+i*35, 9, 9+i*35, 9+size.y*35);
+				 g.drawLine(9, 9+j*35, 9+size.x*35, 9+j*35);
+				
+			}
+		}
 		 /*
 		super.paintComponent(g);
 	    g.setColor(Color.BLUE);
