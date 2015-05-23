@@ -45,7 +45,7 @@ public class Game implements MouseListener,MouseMotionListener{
 		 pan.add(goban);		 
 		 frame.setVisible(true);
 		 
-		 current_player = 
+		// current_player = 
 	}
 	
 	//Singleton pour eviter de le lancer plusiur fois
