@@ -5,6 +5,7 @@ import java.awt.Point;
 public class Case {
 	private int state;
 	private Point pos;
+	private boolean marque;
 		
 	public Case(int s,int x,int y) {
 		state = s;
@@ -16,9 +17,25 @@ public class Case {
 		state = v;
 	}	
 	
+	public void set_marque(){
+		marque = true;
+	}
+	
+	public void unset_marque(){
+		marque = false;
+	}
+	
 	//Getter
 	public int get_pierre(){
 		return state;
+	}
+	
+	public boolean get_marque(){
+		return marque;
+	}
+	
+	public Point get_position(){
+		return pos;
 	}
 	
 }

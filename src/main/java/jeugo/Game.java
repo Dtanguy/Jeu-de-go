@@ -52,8 +52,7 @@ public class Game implements MouseListener,MouseMotionListener{
 	     //Plateau
 	     goban = new Plateau(sx,sy);
 	     goban.addMouseListener(this);
-	     goban.addMouseMotionListener(this);
-	     
+	     goban.addMouseMotionListener(this);	     
 	     goban.set_location(60+(19-sx)*goban.cx/2, 100+(19-sy)*goban.cy/2);
 		 pan.add(goban);		 
 		 
@@ -80,7 +79,7 @@ public class Game implements MouseListener,MouseMotionListener{
 		// TODO Auto-generated method stub
 		int x = e.getX() - goban.mx;
 		int y =	e.getY() - goban.my;
-		goban.set_cursor(x,y);
+		goban.set_cursor(x,y,current_player);
 		System.out.println("Mouse move" + x + " "+y);
 		goban.update();
 	}

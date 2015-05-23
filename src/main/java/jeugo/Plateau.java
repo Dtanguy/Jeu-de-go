@@ -52,12 +52,35 @@ public class Plateau extends JComponent {
 	private Case start_case;
 	public void territoire(Case start){
 		start_case = start;
-		territoire_rec(start_case,-1);
+		territoire_rec(start_case);
 	}	
-	public void territoire_rec(Case d,int nop){
-		
-		
-		
+	public void territoire_rec(Case d){
+	/*	if (!d.get_marque()){
+			d.set_marque();
+			
+			Case c1 = cases[d.get_position().x-1][d.get_position().y-1];
+			Case c2 = cases[d.get_position().x][d.get_position().y-1];
+			Case c3 = cases[d.get_position().x+1][d.get_position().y-1];
+			
+			Case c4 = cases[d.get_position().x-1][d.get_position().y];
+			Case c5 = cases[d.get_position().x+1][d.get_position().y];
+			
+			Case c6 = cases[d.get_position().x-1][d.get_position().y+1];
+			Case c7 = cases[d.get_position().x][d.get_position().y+1];
+			Case c8 = cases[d.get_position().x+1][d.get_position().y+1];
+			
+			territoire_rec(c1);
+			territoire_rec(c2);
+			territoire_rec(c3);
+			
+			territoire_rec(c4);
+			territoire_rec(c5);
+			
+			territoire_rec(c6);
+			territoire_rec(c7);
+			territoire_rec(c8);
+			
+		}	*/	
 	}	
 	
 	//Actualisation du visuel de la piece
@@ -105,15 +128,20 @@ public class Plateau extends JComponent {
 		 //Curseur
 		 g.setColor(Color.RED);
 		 if(cursor.x != -1 && cursor.y != -1){
-			 g.drawOval(mx-(cx/2)-cx+(cursor.x+1)*cx, my-(cy/2)-cy+(cursor.y+1)*cy, cx-2, cy-2);
+			 if(play == 1){
+				//Si un blanc sur la case
+				paint_img(g,"ressource/blanc.png", mx-(cx/2)-cx+(cursor.x+1)*cx, my-(cy/2)-cy+(cursor.y+1)*cy, cx-2, cy-2);
+			 }else if(play == 2){
+				//Si un noir sur la case
+				paint_img(g,"ressource/noir.png", mx-(cx/2)-cx+(cursor.x+1)*cx, my-(cy/2)-cy+(cursor.y+1)*cy, cx-2, cy-2);							  
+			 }			 
 		 }		
 		
 	}
 	
 	public Point find_point(int x,int y){
 		x += cx/2;
-		y += cy/2;
-		
+		y += cy/2;		
 		return new Point((int)((x/cx)),(int)((y/cy)));
 	}
 	
@@ -130,7 +158,7 @@ public class Plateau extends JComponent {
 		 g2.finalize();
 	}
 
-	//foncion qui renvois un nombre aleatoire entre MIN et MAX en parametre
+	//fonction qui renvois un nombre aleatoire entre MIN et MAX en parametre
 	private int rnd(int min, int max) {
 		return (int) (Math.random() * ((max+1) - min)) + min;
 	}	
@@ -140,9 +168,11 @@ public class Plateau extends JComponent {
 		my = y;
 	}
 	
-	public void set_cursor(int x,int y){		
-		if (x > -cx && y > -cy && x < size.x*cx & y < size.y*cy){
+	int play;
+	public void set_cursor(int x,int y,int p){		
+		if (x > -cx && y > -cy && x < size.x*cx+cx/2 & y < size.y*cy+cy/2){
 			cursor =  find_point(x,y);
+			play = p;
 		}else{
 			cursor = new Point(-1,-1);
 		}
