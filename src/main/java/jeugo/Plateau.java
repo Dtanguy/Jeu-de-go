@@ -171,8 +171,10 @@ public class Plateau extends JComponent {
 	int play;
 	public void set_cursor(int x,int y,int p){		
 		if (x > -cx && y > -cy && x < size.x*cx+cx/2 & y < size.y*cy+cy/2){
-			cursor =  find_point(x,y);
-			play = p;
+			if (find_case(x,y).get_pierre() == vide){
+				cursor =  find_point(x,y);			
+				play = p;
+			}			
 		}else{
 			cursor = new Point(-1,-1);
 		}
