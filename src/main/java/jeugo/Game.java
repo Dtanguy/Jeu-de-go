@@ -53,7 +53,8 @@ public class Game implements MouseListener,MouseMotionListener{
 	     goban = new Plateau(sx,sy);
 	     goban.addMouseListener(this);
 	     goban.addMouseMotionListener(this);
-	     goban.set_location(50, 100);
+	     
+	     goban.set_location(50+(19-sx)*goban.cx/2, 100+(19-sy)*goban.cy/2);
 		 pan.add(goban);		 
 		 
 		 frame.setVisible(true);

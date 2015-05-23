@@ -129,7 +129,7 @@ public class Plateau extends JComponent {
 	}
 	
 	public void set_cursor(int x,int y){		
-		if (x > -cx && y > -cy && x < 500 & y < 500){
+		if (x > -cx && y > -cy && x < size.x*cx & y < size.y*cy){
 			cursor =  find_point(x,y);
 		}else{
 			cursor = new Point(-1,-1);
