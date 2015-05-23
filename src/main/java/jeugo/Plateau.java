@@ -17,18 +17,21 @@ public class Plateau extends JComponent {
 	// Plateau contenant des pièces
 	public Case cases[][];
 	//Parametre de tailled es case et des marge
-	private int mx = 50;
-	private int my = 50;		 
-	private int cx = 25;
-	private int cy = 25;
+	public int mx = 50;
+	public int my = 50;		 
+	public int cx = 25;
+	public int cy = 25;
 	//Couleurs
 	private int vide = 0;
 	private int blanc = 1;
 	private int noir =2;
+	//curseur
+	public Point cursor;
 	
 	//Constructeur
 	public Plateau(int x, int y) {
-		size = new Point(x,y);			  
+		size = new Point(x,y);	
+		cursor = new Point(-1,-1);
 		initialize();		
 	}
 	
@@ -85,9 +88,23 @@ public class Plateau extends JComponent {
 				 }
 				 
 			}
-		 }	
+		 }
+
+		 //Curseur
+		 g.setColor(Color.RED);
+		 if(cursor.x != -1 && cursor.y != -1){
+			 g.drawOval(mx-(cx/2)-cx+(cursor.x+1)*cx, my-(cy/2)-cy+(cursor.y+1)*cy, cx-2, cy-2);
+		 }		
 		
-		
+	}
+	
+	public Point find_point(int x,int y){
+		return new Point((int)((x/cx)+1),(int)((y/cy)+1));
+	}
+	
+	public Case find_case(int x,int y){
+		Point tmp = find_point(x,y);
+		return cases[tmp.x][tmp.y];
 	}
 	
 	//Fonction qui dessine l'image donnée en parametre sur le Jcomponent a l'emplassement et a la size donnée
@@ -106,6 +123,14 @@ public class Plateau extends JComponent {
 	public void set_location(int x,int y){		
 		mx = x;
 		my = y;
+	}
+	
+	public void set_cursor(int x,int y){		
+		if (x > -1 && y > -1 && x < 500 & y < 500){
+			cursor =  find_point(x,y);
+		}else{
+			cursor = new Point(-1,-1);
+		}
 	}
 	
 	

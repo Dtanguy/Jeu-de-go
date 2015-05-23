@@ -1,5 +1,7 @@
 package jeugo;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,7 +18,8 @@ public class Game implements MouseListener,MouseMotionListener{
 	private JFrame frame;
 	private JPanel pan;	
 	private Plateau goban;	
-	private JLabel current_player;
+	private JLabel player;
+	private int current_player;
 	
 	//Couleurs
 	private int vide = 0;
@@ -35,7 +38,16 @@ public class Game implements MouseListener,MouseMotionListener{
 	     frame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 	     
 	     //Panel
-	     pan = (JPanel) frame.getContentPane();	    
+	     pan = (JPanel) frame.getContentPane();	 
+	     
+	     //Player
+		 current_player = noir;	
+		 Font font = new Font("Vivaldi", Font.BOLD, 30);
+		 player = new JLabel("Le joueur aux pierre Noir commence !");
+		 player.setFont(font);
+		 //player.setForeground(new Color(240, 240, 240));			
+		 player.setBounds(60,15,500,50);
+		 pan.add(player);
 	     
 	     //Plateau
 	     goban = new Plateau(sx,sy);
@@ -43,9 +55,8 @@ public class Game implements MouseListener,MouseMotionListener{
 	     goban.addMouseMotionListener(this);
 	     goban.set_location(50, 100);
 		 pan.add(goban);		 
-		 frame.setVisible(true);
 		 
-		// current_player = 
+		 frame.setVisible(true);
 	}
 	
 	//Singleton pour eviter de le lancer plusiur fois
@@ -58,6 +69,7 @@ public class Game implements MouseListener,MouseMotionListener{
 		return instance;
 	}
 
+
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -65,12 +77,20 @@ public class Game implements MouseListener,MouseMotionListener{
 
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		int x = e.getX() - goban.mx;
+		int y =	e.getY() - goban.my;
+		goban.set_cursor(x,y);
+		System.out.println("Mouse move" + x + " "+y);
+		goban.update();
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("clik");
+		// TODO Auto-generated method stub	
+		int x = e.getX() - goban.mx;
+		int y =	e.getY() - goban.my;
+		System.out.println("Mouse clik" + x + " "+y);
+		goban.find_case(x,y).set_pierre(current_player);
+		actualise_player();
 	}
 
 	public void mouseEntered(MouseEvent e) {
@@ -91,6 +111,19 @@ public class Game implements MouseListener,MouseMotionListener{
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void actualise_player(){
+		player.setBounds(100,15,500,50);
+		if (current_player == noir){
+			System.out.println("Joueur noir pose un pion");
+			current_player = blanc;
+			player.setText("C'est au tour du joueur Blanc.");
+		}else if (current_player == blanc){
+			System.out.println("Joueur blanc pose un pion");
+			current_player = noir;
+			player.setText("C'est au tour du joueur Noir.");
+		}
 	}
 	
 }
