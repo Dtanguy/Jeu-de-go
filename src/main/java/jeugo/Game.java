@@ -30,7 +30,7 @@ public class Game implements MouseListener,MouseMotionListener{
 		 //Frame
 		 frame = new JFrame("Jeu de Go  | Partie");	        
 	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  	    
-	     frame.setSize(590, 660);
+	     frame.setSize(590, 600);
 	     frame.setLocationRelativeTo(null);
 	     
 	     //Decoration
@@ -54,7 +54,7 @@ public class Game implements MouseListener,MouseMotionListener{
 	     goban.addMouseListener(this);
 	     goban.addMouseMotionListener(this);
 	     
-	     goban.set_location(50+(19-sx)*goban.cx/2, 100+(19-sy)*goban.cy/2);
+	     goban.set_location(60+(19-sx)*goban.cx/2, 100+(19-sy)*goban.cy/2);
 		 pan.add(goban);		 
 		 
 		 frame.setVisible(true);
@@ -90,9 +90,10 @@ public class Game implements MouseListener,MouseMotionListener{
 		int x = e.getX() - goban.mx;
 		int y =	e.getY() - goban.my;
 		System.out.println("Mouse clik" + x + " "+y);
-		Case tmp =goban.find_case(x,y);
+		Case tmp = goban.find_case(x,y);
 		if (tmp.get_pierre() == vide){
 			tmp.set_pierre(current_player);
+			goban.territoire(tmp);
 			actualise_player();			
 		}		
 		goban.update();

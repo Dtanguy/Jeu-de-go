@@ -19,8 +19,8 @@ public class Plateau extends JComponent {
 	//Parametre de tailled es case et des marge
 	public int mx = 50;
 	public int my = 50;		 
-	public int cx = 25;
-	public int cy = 25;
+	public int cx = 24;
+	public int cy = 22;
 	//Couleurs
 	private int vide = 0;
 	private int blanc = 1;
@@ -42,14 +42,26 @@ public class Plateau extends JComponent {
 			for (int j=0; j < size.y+1; j++) {
 				// On crée une pièce à chaque fois
 				//pieces[i][j] = new Piece(rnd(0,2));
-				cases[i][j] = new Case(0);
+				cases[i][j] = new Case(0,i,j);
 			}
 		}	
 		repaint();
 	}
+
+	
+	private Case start_case;
+	public void territoire(Case start){
+		start_case = start;
+		territoire_rec(start_case,-1);
+	}	
+	public void territoire_rec(Case d,int nop){
+		
+		
+		
+	}	
 	
 	//Actualisation du visuel de la piece
-	public void update() {
+	public void update() {		
 		repaint();		    
 	}
 	
