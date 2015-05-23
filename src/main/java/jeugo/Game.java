@@ -90,8 +90,12 @@ public class Game implements MouseListener,MouseMotionListener{
 		int x = e.getX() - goban.mx;
 		int y =	e.getY() - goban.my;
 		System.out.println("Mouse clik" + x + " "+y);
-		goban.find_case(x,y).set_pierre(current_player);
-		actualise_player();
+		Case tmp =goban.find_case(x,y);
+		if (tmp.get_pierre() == vide){
+			tmp.set_pierre(current_player);
+			actualise_player();			
+		}		
+		goban.update();
 	}
 
 	public void mouseEntered(MouseEvent e) {
