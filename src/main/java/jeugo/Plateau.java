@@ -9,32 +9,40 @@ import java.awt.Toolkit;
 
 import javax.swing.JComponent;
 
-public class Plateau extends JComponent{
+public class Plateau extends JComponent {
 	
 	private static final long serialVersionUID = 1L;
 	//Attribut
 	public Point size;
 	// Plateau contenant des pièces
-	public Piece pieces[][];
+	public Case cases[][];
+	//Parametre de tailled es case et des marge
+	private int mx = 50;
+	private int my = 50;		 
+	private int cx = 25;
+	private int cy = 25;
+	//Couleurs
+	private int vide = 0;
+	private int blanc = 1;
+	private int noir =2;
 	
 	//Constructeur
 	public Plateau(int x, int y) {
-		size = new Point(x,y);
-		//this.setLocation(x, y);
-	    //this.setSize(x, y);
-		init();
-		repaint();
+		size = new Point(x,y);			  
+		initialize();		
 	}
 	
 	//Initialisation
-	public void init(){
-		pieces = new Piece[size.x+2][size.y+2];
-		for (int i=0; i < size.x+2; i++) {
-			for (int j=0; j < size.y+2; j++) {
+	public void initialize(){
+		cases = new Case[size.x+1][size.y+1];
+		for (int i=0; i < size.x+1; i++) {
+			for (int j=0; j < size.y+1; j++) {
 				// On crée une pièce à chaque fois
-				pieces[i][j] = new Piece(2);
+				//pieces[i][j] = new Piece(rnd(0,2));
+				cases[i][j] = new Case(0);
 			}
 		}	
+		repaint();
 	}
 	
 	//Actualisation du visuel de la piece
@@ -43,59 +51,62 @@ public class Plateau extends JComponent{
 	}
 	
 	//Fonction de dessin du motif
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {		
+		super.paintComponent(g);		
 				
-		 Graphics2D g2 = (Graphics2D) g;
-		/* Image img1 = Toolkit.getDefaultToolkit().getImage("ressource/Goban.png");
-		 g2.drawImage(img1, 10, 10, this);
-		 g2.finalize();
-		*/
-		 
-		int mx = 10;
-		int my = 10;
-		 
-		int cx=20;
-		int cy=20;
-		 
-		 for (int i=0; i < size.x; i++) {
-			for (int j=0; j < size.y; j++) {				
-				 Image img1 = Toolkit.getDefaultToolkit().getImage("ressource/texture_case.png");
-				 g2.drawImage(img1, mx+i*cx, my+j*cy,cx,cy, this);
-				 g2.finalize();
+		 //Texture des cases
+		 for (int i=-1; i < size.x+1; i++) {
+			for (int j=-1; j < size.y+1; j++) {				 
+				 paint_img(g,"ressource/texture_case.png", mx+i*cx, my+j*cy,cx,cy);
 			}
-		}	
-		
+		 }	
+		 		 
+		 //Ligne noire entre chaque case
 		 g.setColor(Color.BLACK);
-		 for (int i=0; i <= size.x; i++) {
-			for (int j=0; j <= size.y; j++) {				
-				 g.drawLine(mx-1+i*cx, my-1, mx-1+i*cx, my-1+size.y*cy);
-				 g.drawLine(mx-1, my-1+j*cy, mx-1+size.x*cx, my-1+j*cy);
-			}
-		}
-		
-		 for (int i=0; i < size.x+2; i++) {
-				for (int j=0; j < size.y+2; j++) {				
-					
-					if(pieces[i][j].state == 0){
-						
-					}else if(pieces[i][j].state == 1){
-						 g.setColor(Color.WHITE);
-						 g.fillOval(mx-cx+i*cx, my-cy+j*cy, cx-2, cy-2);
-					}else if(pieces[i][j].state == 2){
-						 g.setColor(Color.BLACK);
-						 g.fillOval(mx-cx+i*cx, my-cy+j*cy, cx-2, cy-2);
-					}
-
-
-			}
-		}
-	 
+		 for (int i=0; i < size.x+1; i++) {			
+				g.drawLine(mx-1+i*cx, my-1, mx-1+i*cx, my-1+size.y*cy);						
+		 }
+		 for (int j=0; j < size.y+1; j++) {			
+			 g.drawLine(mx-1, my-1+j*cy, mx-1+size.x*cx, my-1+j*cy);
+		 }
 		 
-		 /*
-		super.paintComponent(g);
-	    g.setColor(Color.BLUE);
-	    g.fillRect(0, 0, 500, 500);*/	    	       
+		//Pions
+		 for (int i=0; i < size.x+1; i++) {
+			for (int j=0; j < size.y+1; j++) {	
+				 
+				 if(cases[i][j].get_pierre() == vide){
+						//Si aucune piece sur la case
+				 }else if(cases[i][j].get_pierre() == blanc){
+						//Si un blanc sur la case
+						paint_img(g,"ressource/blanc.png", mx-(cx/2)-cx+(i+1)*cx, my-(cy/2)-cy+(j+1)*cy, cx-2, cy-2);	
+				 }else if(cases[i][j].get_pierre() == noir){						 
+						//Si un noir sur la case
+						paint_img(g,"ressource/noir.png", mx-(cx/2)-cx+(i+1)*cx, my-(cy/2)-cy+(j+1)*cy, cx-2, cy-2);							 
+				 }
+				 
+			}
+		 }	
+		
+		
+	}
+	
+	//Fonction qui dessine l'image donnée en parametre sur le Jcomponent a l'emplassement et a la size donnée
+	private void paint_img(Graphics g,String file, int x, int y , int sx,int sy){
+		 Graphics2D g2 = (Graphics2D) g;
+		 Image img1 = Toolkit.getDefaultToolkit().getImage(file);
+		 g2.drawImage(img1, x, y,sx,sy, this);
+		 g2.finalize();
 	}
 
+	//foncion qui renvois un nombre aleatoire entre MIN et MAX en parametre
+	private int rnd(int min, int max) {
+		return (int) (Math.random() * ((max+1) - min)) + min;
+	}	
+	
+	public void set_location(int x,int y){		
+		mx = x;
+		my = y;
+	}
+	
 	
 }
