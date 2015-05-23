@@ -99,7 +99,10 @@ public class Plateau extends JComponent {
 	}
 	
 	public Point find_point(int x,int y){
-		return new Point((int)((x/cx)+1),(int)((y/cy)+1));
+		x += cx/2;
+		y += cy/2;
+		
+		return new Point((int)((x/cx)),(int)((y/cy)));
 	}
 	
 	public Case find_case(int x,int y){
@@ -126,7 +129,7 @@ public class Plateau extends JComponent {
 	}
 	
 	public void set_cursor(int x,int y){		
-		if (x > -1 && y > -1 && x < 500 & y < 500){
+		if (x > -cx && y > -cy && x < 500 & y < 500){
 			cursor =  find_point(x,y);
 		}else{
 			cursor = new Point(-1,-1);
