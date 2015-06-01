@@ -6,6 +6,7 @@ public class Case {
 	private int state;
 	private Point pos;
 	private boolean marque;
+	private int liberte;
 		
 	public Case(int s,int x,int y) {
 		state = s;
@@ -25,6 +26,10 @@ public class Case {
 		marque = false;
 	}
 	
+	public void set_liberte(int l){
+		liberte = l;
+	}
+	
 	//Getter
 	public int get_pierre(){
 		return state;
@@ -32,6 +37,10 @@ public class Case {
 	
 	public boolean get_marque(){
 		return marque;
+	}
+	
+	public int get_liberte(){
+		return liberte;
 	}
 	
 	public Point get_position(){

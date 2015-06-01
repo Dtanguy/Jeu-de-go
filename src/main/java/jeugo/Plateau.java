@@ -51,37 +51,122 @@ public class Plateau extends JComponent {
 	
 	private Case start_case;
 	public void territoire(Case start){
-		start_case = start;
-		territoire_rec(start_case);
+		
+		//System.out.println("la !");
+		
+		
+		
+		int c = 0;
+		if (start.get_pierre() == blanc){
+			c = noir;
+		}else if (start.get_pierre() == noir){
+			c = blanc;
+		}
+				
+		
+		for (int i=0; i < size.x+1; i++) {
+			for (int j=0; j < size.y+1; j++) {		
+				
+				
+				if (cases[i][j].get_pierre() == c){										
+					actu_lib(cases[i][j],start.get_pierre());						
+					System.out.println(c + " " + cases[i][j].get_liberte());
+				}
+				
+			}
+		}	
+		
+		for (int i=0; i < size.x+1; i++) {
+			for (int j=0; j < size.y+1; j++) {				
+				if (cases[i][j].get_pierre() == c){
+					
+					
+
+					for (int ii=0; ii < size.x+1; ii++) {
+						for (int jj=0; jj < size.y+1; jj++) {	
+							cases[ii][jj].unset_marque();
+						}
+					}
+					
+					if (territoire_rec(cases[i][j],c) == 0){
+						System.out.println(territoire_rec(cases[i][j],c));
+						
+						for (int ii=0; ii < size.x+1; ii++) {
+							for (int jj=0; jj < size.y+1; jj++) {	
+								if (cases[ii][jj].get_marque()){
+									cases[ii][jj].set_pierre(vide);
+								}
+							}
+						}
+									
+					}
+					
+					
+				}
+			}
+		}	
+		
+		
+		
+		
 	}	
-	public void territoire_rec(Case d){
-	/*	if (!d.get_marque()){
-			d.set_marque();
+	
+	
+	public int territoire_rec(Case d,int good){
 			
-			Case c1 = cases[d.get_position().x-1][d.get_position().y-1];
-			Case c2 = cases[d.get_position().x][d.get_position().y-1];
-			Case c3 = cases[d.get_position().x+1][d.get_position().y-1];
-			
-			Case c4 = cases[d.get_position().x-1][d.get_position().y];
-			Case c5 = cases[d.get_position().x+1][d.get_position().y];
-			
-			Case c6 = cases[d.get_position().x-1][d.get_position().y+1];
-			Case c7 = cases[d.get_position().x][d.get_position().y+1];
-			Case c8 = cases[d.get_position().x+1][d.get_position().y+1];
-			
-			territoire_rec(c1);
-			territoire_rec(c2);
-			territoire_rec(c3);
-			
-			territoire_rec(c4);
-			territoire_rec(c5);
-			
-			territoire_rec(c6);
-			territoire_rec(c7);
-			territoire_rec(c8);
-			
-		}	*/	
-	}	
+		d.set_marque();
+		int lib = d.get_liberte();
+		
+		if (d.get_position().y>0 && !cases[d.get_position().x][d.get_position().y-1].get_marque() && cases[d.get_position().x][d.get_position().y-1].get_pierre() == good){				
+			lib += territoire_rec(cases[d.get_position().x][d.get_position().y-1],good);		
+		}
+		
+		if (d.get_position().x>0 && !cases[d.get_position().x-1][d.get_position().y].get_marque() && cases[d.get_position().x-1][d.get_position().y].get_pierre() == good){	
+			lib += territoire_rec(cases[d.get_position().x-1][d.get_position().y],good);	
+		}
+		
+		if (d.get_position().x<size.x+1 && !cases[d.get_position().x+1][d.get_position().y].get_marque() && cases[d.get_position().x+1][d.get_position().y].get_pierre() == good){				
+			lib += territoire_rec(cases[d.get_position().x+1][d.get_position().y],good);
+		}
+		
+		if (d.get_position().y<size.y+1 && !cases[d.get_position().x][d.get_position().y+1].get_marque() && cases[d.get_position().x][d.get_position().y+1].get_pierre() == good){				
+			lib += territoire_rec(cases[d.get_position().x][d.get_position().y+1],good);
+		}	
+		
+		/*if (lib == 0){
+			d.set_pierre(vide);
+		}*/
+		return lib;	
+		
+	}
+	
+	
+	public void actu_lib(Case x,int bady){
+		
+		int lib = 0;
+		
+		if (x.get_position().y>0 && cases[x.get_position().x][x.get_position().y-1].get_pierre() == vide){				
+			lib +=1;		
+		}
+		
+		if (x.get_position().x>0 && cases[x.get_position().x-1][x.get_position().y].get_pierre() == vide){	
+			lib +=1;	
+		}
+		
+		if (x.get_position().x<size.x+1 && cases[x.get_position().x+1][x.get_position().y].get_pierre() == vide){				
+			lib +=1;
+		}
+		
+		if (x.get_position().y<size.y+1 && cases[x.get_position().x][x.get_position().y+1].get_pierre() == vide){				
+			lib +=1;
+		}
+		
+	    x.set_liberte(lib);
+		
+	}
+	
+	
+
 	
 	//Actualisation du visuel de la piece
 	public void update() {		

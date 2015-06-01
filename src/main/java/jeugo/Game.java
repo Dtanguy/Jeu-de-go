@@ -79,16 +79,14 @@ public class Game implements MouseListener,MouseMotionListener{
 		// TODO Auto-generated method stub
 		int x = e.getX() - goban.mx;
 		int y =	e.getY() - goban.my;
-		goban.set_cursor(x,y,current_player);
-		System.out.println("Mouse move" + x + " "+y);
+		goban.set_cursor(x,y,current_player);		
 		goban.update();
 	}
 
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub	
 		int x = e.getX() - goban.mx;
-		int y =	e.getY() - goban.my;
-		System.out.println("Mouse clik" + x + " "+y);
+		int y =	e.getY() - goban.my;	
 		Case tmp = goban.find_case(x,y);
 		if (tmp.get_pierre() == vide){
 			tmp.set_pierre(current_player);
