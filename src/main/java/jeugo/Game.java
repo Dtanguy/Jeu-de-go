@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 
-//Listener des evenement souris
+//Listener des événements souris
 public class Game implements MouseListener,MouseMotionListener{
 
 	//Instance pour le singleton
@@ -31,7 +31,7 @@ public class Game implements MouseListener,MouseMotionListener{
 	
 	public Game(int sx,int sy){	
 		
-		 //Creation et parametrage de la Frame
+		 //Creation et paramètrage de la Frame
 		 frame = new JFrame("Jeu de Go  | Partie");	        
 	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  	    
 	     frame.setSize(590, 600);
@@ -41,10 +41,10 @@ public class Game implements MouseListener,MouseMotionListener{
 		 frame.setUndecorated(true);
 	     frame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 	     
-	     //Creation du Panel
+	     //Création du Panel
 	     pan = (JPanel) frame.getContentPane();	 
 	     
-	     //On initialise le systeme de tour des joueurs et on l'affiche
+	     //On initialise le système de tour des joueurs et on l'affiche
 		 current_player = noir;	
 		 Font font = new Font("Vivaldi", Font.BOLD, 30);
 		 player = new JLabel("Le joueur aux pierre Noir commence !");
@@ -53,14 +53,14 @@ public class Game implements MouseListener,MouseMotionListener{
 		 player.setBounds(60,15,500,50);
 		 pan.add(player);
 	     
-	     //Creation du plateau au dimention choisie dans le menu
+	     //Création du plateau au dimention choisie dans le menu
 	     goban = new Plateau(sx,sy);
 	     goban.addMouseListener(this);
 	     goban.addMouseMotionListener(this);	     
 	     goban.set_location(60+(19-sx)*goban.cx/2, 100+(19-sy)*goban.cy/2);
 		 pan.add(goban);		 
 		 
-		 //On rend la fenetre visible
+		 //On rend la fenêtre visible
 		 frame.setVisible(true);
 	}
 	
@@ -78,7 +78,7 @@ public class Game implements MouseListener,MouseMotionListener{
 		}
 	}
 	
-	//Singleton pour eviter de lancer le jeux plusieur fois
+	//Singleton pour éviter de lancer le jeu plusieurs fois
 	public static Game getInstance(int sx,int sy){
 		if (instance == null){
 			instance = new Game(sx, sy);
@@ -88,9 +88,9 @@ public class Game implements MouseListener,MouseMotionListener{
 		return instance;
 	}
 
-	//Detection des mouvement de la souris
+	//Detection des mouvements de la souris
 	public void mouseMoved(MouseEvent e) {
-		//Previsualisation du pions sur la plateau dans la case sous la souris
+		//Previsualisation du pion sur la plateau dans la case sous la souris
 		int x = e.getX() - goban.mx;
 		int y =	e.getY() - goban.my;
 		goban.set_cursor(x,y,current_player);		
@@ -98,7 +98,7 @@ public class Game implements MouseListener,MouseMotionListener{
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		// On pause le pion dans la case sosu la souris
+		// On pause le pion dans la case sous la souris
 		int x = e.getX() - goban.mx;
 		int y =	e.getY() - goban.my;	
 		Case tmp = goban.find_case(x,y);

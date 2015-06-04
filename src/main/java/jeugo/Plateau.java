@@ -18,7 +18,7 @@ public class Plateau extends JComponent {
 	public Point size;
 	// Tableau de case
 	public Case cases[][];
-	//Parametre d'affichage (taille des case et des marge en pixel) 
+	//Paramètre d'affichage (taille des cases et des marges en pixel) 
 	public int mx = 50;
 	public int my = 50;		 
 	public int cx = 24;
@@ -37,7 +37,7 @@ public class Plateau extends JComponent {
 		initialize();		
 	}
 	
-	//Initialisation, Creation de totue les case vide et affichage
+	//Initialisation, Création de toute les cases vides et affichage
 	public void initialize(){
 		cases = new Case[size.x+1][size.y+1];
 		for (int i=0; i < size.x+1; i++) {
@@ -55,7 +55,7 @@ public class Plateau extends JComponent {
 	private Case start_case;
 	public void territoire(Case start){
 		
-		//Celon la couleur de la derniere pierre posser on trouve la couleur de l'ennmie
+		//Celon la couleur de la dernière pierre possé on trouve la couleur de l'ennemie
 		int c = 0;
 		if (start.get_pierre() == blanc){
 			c = noir;
@@ -63,7 +63,7 @@ public class Plateau extends JComponent {
 			c = blanc;
 		}
 				
-		//On actulaise les libertée de toute les piece ennemie
+		//On actulaise les libertées de toute les pieces ennemies
 		for (int i=0; i < size.x+1; i++) {
 			for (int j=0; j < size.y+1; j++) {
 				if (cases[i][j].get_pierre() == c){										
@@ -76,16 +76,16 @@ public class Plateau extends JComponent {
 			for (int j=0; j < size.y+1; j++) {				
 				if (cases[i][j].get_pierre() == c){
 										
-					//On enleve toute les des pierre que l'on vas parcourir
+					//On enleve toutes les  marques des pierres que l'on vas parcourir
 					for (int ii=0; ii < size.x+1; ii++) {
 						for (int jj=0; jj < size.y+1; jj++) {	
 							cases[ii][jj].unset_marque();
 						}
 					}
 					
-					//On utilise la fonction de parcour recursive, si elle renvois une libertée totale de 0
+					//On utilise la fonction de parcourt recursive, si elle renvoie une libertée totale de 0
 					if (territoire_rec(cases[i][j],c) == 0){						
-						//Pour chaque pierre que cette focntion a marquée, on les suprimes et on enleve la marque
+						//Pour chaque pierre que cette focntion a marquée, on les suprime et on enleve la marque
 						for (int ii=0; ii < size.x+1; ii++) {
 							for (int jj=0; jj < size.y+1; jj++) {	
 								if (cases[ii][jj].get_marque()){
@@ -101,7 +101,7 @@ public class Plateau extends JComponent {
 		
 	}	
 	
-	//Focntion de parcour de territoire recursive
+	//Fonction de parcourt de territoire recursive
 	public int territoire_rec(Case d,int good){			
 		d.set_marque();
 		int lib = d.get_liberte();
@@ -125,7 +125,7 @@ public class Plateau extends JComponent {
 		return lib;			
 	}
 	
-	//Focntion de calcul de libertée d'une pierre
+	//Fonction de calcul de libertée d'une pierre
 	public void actu_lib(Case x,int bady){
 		
 		int lib = 0;
@@ -214,13 +214,13 @@ public class Plateau extends JComponent {
 		return new Point((int)((x/cx)),(int)((y/cy)));
 	}
 	
-	//Fonction qui renvoi la case correspondant a un x y donner
+	//Fonction qui renvoie la case correspondant a un x y donné
 	public Case find_case(int x,int y){
 		Point tmp = find_point(x,y);
 		return cases[tmp.x][tmp.y];
 	}
 	
-	//Fonction qui dessine l'image donnée en parametre sur le Jcomponent a l'emplassement et a la size donnée
+	//Fonction qui dessine l'image donnée en paramètre sur le Jcomponent a l'emplassement et a la size donnée
 	private void paint_img(Graphics g,String file, int x, int y , int sx,int sy){
 		 Graphics2D g2 = (Graphics2D) g;
 		 Image img1 = Toolkit.getDefaultToolkit().getImage(file);
@@ -228,7 +228,7 @@ public class Plateau extends JComponent {
 		 g2.finalize();
 	}
 
-	//fonction qui renvois un nombre aleatoire entre MIN et MAX en parametre
+	//fonction qui renvoie un nombre aléatoire entre MIN et MAX en paramètre
 	private int rnd(int min, int max) {
 		return (int) (Math.random() * ((max+1) - min)) + min;
 	}	
@@ -240,7 +240,7 @@ public class Plateau extends JComponent {
 	}
 	
 	
-	//Setter de la position du curseur en therme de case
+	//Setter de la position du curseur en terme de case
 	int play;
 	public void set_cursor(int x,int y,int p){		
 		if (x > -cx && y > -cy && x < size.x*cx+cx/2 & y < size.y*cy+cy/2){

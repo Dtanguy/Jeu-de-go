@@ -6,14 +6,14 @@ public class Case {
 	
 	//Etat de la case
 	private int state;
-	//Position de lacase
+	//Position de la case
 	private Point pos;
-	//Presence ou non d'une marque dessus (sert pour le parcour de territoire)
+	//Présence ou non d'une marque dessus (sert pour le parcour de territoire)
 	private boolean marque;
-	//Nombre de libertée de la case
+	//Nombre de libertées de la case
 	private int liberte;
 		
-	//Constructeur avec en parametre l'etat (noir, blanc, vide) et la position
+	//Constructeur avec en paramètre l'état (noir, blanc, vide) et la position
 	public Case(int s,int x,int y) {
 		state = s;
 		pos = new Point(x,y);
@@ -34,7 +34,7 @@ public class Case {
 		marque = false;
 	}
 	
-	//Setter pour changer les libertée
+	//Setter pour changer les libertées
 	public void set_liberte(int l){
 		liberte = l;
 	}
@@ -49,7 +49,7 @@ public class Case {
 		return marque;
 	}
 	
-	//Getter pour les libertée
+	//Getter pour les libertées
 	public int get_liberte(){
 		return liberte;
 	}

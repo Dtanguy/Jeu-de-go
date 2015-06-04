@@ -30,7 +30,7 @@ public class Menu {
 	
 	public Menu() {		
 		
-		//Creation et parametrage de la Frame
+		//Création et paramètrage de la Frame
 		frame = new JFrame("Jeu de Go | Menu");	        
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  	    
 	    frame.setSize(300, 370);
@@ -40,7 +40,7 @@ public class Menu {
 	    frame.setUndecorated(true);
 		frame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 	    
-	    //Creation du Panel
+	    //Création du Panel
 	    pan = (JPanel) frame.getContentPane();		
 	    pan.setLayout(null);
 	    
@@ -91,7 +91,7 @@ public class Menu {
 		frame.setVisible(true);  
 	}
 	
-	//Singleton pour eviter de lancer le menu plusieur fois
+	//Singleton pour éviter de lancer le menu plusieurs fois
 	public static Menu getInstance(){
 		if (instance == null){
 			instance = new Menu();
