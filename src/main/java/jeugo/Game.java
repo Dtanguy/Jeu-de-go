@@ -88,7 +88,6 @@ public class Game implements MouseListener,MouseMotionListener{
 		return instance;
 	}
 
-
 	//Detection des mouvement de la souris
 	public void mouseMoved(MouseEvent e) {
 		//Previsualisation du pions sur la plateau dans la case sous la souris
@@ -97,8 +96,8 @@ public class Game implements MouseListener,MouseMotionListener{
 		goban.set_cursor(x,y,current_player);		
 		goban.update();
 	}
-
-	public void mouseClicked(MouseEvent e) {
+	
+	public void mousePressed(MouseEvent e) {
 		// On pause le pion dans la case sosu la souris
 		int x = e.getX() - goban.mx;
 		int y =	e.getY() - goban.my;	
@@ -108,7 +107,11 @@ public class Game implements MouseListener,MouseMotionListener{
 			goban.territoire(tmp);
 			actualise_player();			
 		}		
-		goban.update();
+		goban.update();	
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub	
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -120,10 +123,6 @@ public class Game implements MouseListener,MouseMotionListener{
 	}
 
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub		
-	}
-
-	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub		
 	}
 
