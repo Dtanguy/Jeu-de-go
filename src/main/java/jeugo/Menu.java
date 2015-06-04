@@ -15,8 +15,10 @@ import javax.swing.SpinnerNumberModel;
 
 public class Menu {
 	
+	//Instance pour le singleton
 	private static Menu instance;
 	
+	//Object du menu
 	private JFrame frame;
 	private JPanel pan;
 	private JLabel txt1;
@@ -28,22 +30,22 @@ public class Menu {
 	
 	public Menu() {		
 		
-		//Frame
+		//Creation et parametrage de la Frame
 		frame = new JFrame("Jeu de Go | Menu");	        
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  	    
 	    frame.setSize(300, 370);
 	    frame.setLocationRelativeTo(null);
 	    
-	    //Decoration
+	    //Décoration de la Frame
 	    frame.setUndecorated(true);
 		frame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 	    
-	    //Panel
+	    //Creation du Panel
 	    pan = (JPanel) frame.getContentPane();		
 	    pan.setLayout(null);
 	    
 	    
-	    //Type de partie
+	    //Choix du type de partie avec des Checkbox
 	    txt1 = new JLabel("Type de partie :");
 	    txt1.setBounds(45, 10, 200, 30);		
 	    type=new CheckboxGroup(); 
@@ -58,7 +60,7 @@ public class Menu {
 	    pan.add(box2); 
 	    pan.add(box3);	
 	    
-	    //Taille du plateau
+	    //Choix de la taille du plateau avec des Spinner
 	    txt2 = new JLabel("Dimention du plateau :");
 	    txt2.setBounds(45, 150, 200, 30);		
 	    SpinnerNumberModel model1 = new SpinnerNumberModel(19, 1, 30, 1);  
@@ -77,7 +79,7 @@ public class Menu {
 		    public void actionPerformed(ActionEvent arg0) {
 		    	int v1 = (Integer)sx.getValue();
 		    	int v2 = (Integer)sy.getValue();	
-		    	//System.out.println();
+		    	//On créé ou o nrecupere une instance de Game avec les parametre de taille du plateau
 		    	Game.getInstance(v1,v2);	
 		    	frame.dispose();
 		    }
@@ -85,11 +87,11 @@ public class Menu {
 		start.setBounds(45, 270, 200, 30);
 		pan.add(start);
 		
-		
+		//On rend le tout visible
 		frame.setVisible(true);  
 	}
 	
-	//Singleton pour eviter de le lancer plusiur fois
+	//Singleton pour eviter de lancer le menu plusieur fois
 	public static Menu getInstance(){
 		if (instance == null){
 			instance = new Menu();

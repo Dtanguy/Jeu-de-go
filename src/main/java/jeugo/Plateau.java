@@ -9,14 +9,16 @@ import java.awt.Toolkit;
 
 import javax.swing.JComponent;
 
+//Extend JComponent pour pouvoir dessiner
 public class Plateau extends JComponent {
 	
 	private static final long serialVersionUID = 1L;
-	//Attribut
+	
+	//Taille du plateau
 	public Point size;
-	// Plateau contenant des pièces
+	// Tableau de case
 	public Case cases[][];
-	//Parametre de tailled es case et des marge
+	//Parametre d'affichage (taille des case et des marge en pixel) 
 	public int mx = 50;
 	public int my = 50;		 
 	public int cx = 24;
@@ -25,17 +27,17 @@ public class Plateau extends JComponent {
 	private int vide = 0;
 	private int blanc = 1;
 	private int noir =2;
-	//curseur
+	//Position curseur
 	public Point cursor;
 	
-	//Constructeur
+	//Constructeur avec en parametre la taille du plateau
 	public Plateau(int x, int y) {
 		size = new Point(x,y);	
 		cursor = new Point(-1,-1);
 		initialize();		
 	}
 	
-	//Initialisation
+	//Initialisation, Creation de totue les case vide et affichage
 	public void initialize(){
 		cases = new Case[size.x+1][size.y+1];
 		for (int i=0; i < size.x+1; i++) {
@@ -49,13 +51,11 @@ public class Plateau extends JComponent {
 	}
 
 	
+	//Focntion de calcul de territoire
 	private Case start_case;
 	public void territoire(Case start){
 		
-		//System.out.println("la !");
-		
-		
-		
+		//Celon la couleur de la derniere pierre posser on trouve la couleur de l'ennmie
 		int c = 0;
 		if (start.get_pierre() == blanc){
 			c = noir;
@@ -63,101 +63,86 @@ public class Plateau extends JComponent {
 			c = blanc;
 		}
 				
-		
+		//On actulaise les libertée de toute les piece ennemie
 		for (int i=0; i < size.x+1; i++) {
-			for (int j=0; j < size.y+1; j++) {		
-				
-				
+			for (int j=0; j < size.y+1; j++) {
 				if (cases[i][j].get_pierre() == c){										
-					actu_lib(cases[i][j],start.get_pierre());						
-					System.out.println(c + " " + cases[i][j].get_liberte());
+					actu_lib(cases[i][j],start.get_pierre());
 				}
-				
 			}
 		}	
-		
+				
 		for (int i=0; i < size.x+1; i++) {
 			for (int j=0; j < size.y+1; j++) {				
 				if (cases[i][j].get_pierre() == c){
-					
-					
-
+										
+					//On enleve toute les des pierre que l'on vas parcourir
 					for (int ii=0; ii < size.x+1; ii++) {
 						for (int jj=0; jj < size.y+1; jj++) {	
 							cases[ii][jj].unset_marque();
 						}
 					}
 					
-					if (territoire_rec(cases[i][j],c) == 0){
-						System.out.println(territoire_rec(cases[i][j],c));
-						
+					//On utilise la fonction de parcour recursive, si elle renvois une libertée totale de 0
+					if (territoire_rec(cases[i][j],c) == 0){						
+						//Pour chaque pierre que cette focntion a marquée, on les suprimes et on enleve la marque
 						for (int ii=0; ii < size.x+1; ii++) {
 							for (int jj=0; jj < size.y+1; jj++) {	
 								if (cases[ii][jj].get_marque()){
 									cases[ii][jj].set_pierre(vide);
 								}
 							}
-						}
-									
-					}
-					
+						}									
+					}					
 					
 				}
 			}
 		}	
 		
-		
-		
-		
 	}	
 	
-	
-	public int territoire_rec(Case d,int good){
-			
+	//Focntion de parcour de territoire recursive
+	public int territoire_rec(Case d,int good){			
 		d.set_marque();
 		int lib = d.get_liberte();
 		
-		if (d.get_position().y>0 && !cases[d.get_position().x][d.get_position().y-1].get_marque() && cases[d.get_position().x][d.get_position().y-1].get_pierre() == good){				
+		if (d.get_position().y-1>0 && !cases[d.get_position().x][d.get_position().y-1].get_marque() && cases[d.get_position().x][d.get_position().y-1].get_pierre() == good){				
 			lib += territoire_rec(cases[d.get_position().x][d.get_position().y-1],good);		
 		}
 		
-		if (d.get_position().x>0 && !cases[d.get_position().x-1][d.get_position().y].get_marque() && cases[d.get_position().x-1][d.get_position().y].get_pierre() == good){	
+		if (d.get_position().x-1>0 && !cases[d.get_position().x-1][d.get_position().y].get_marque() && cases[d.get_position().x-1][d.get_position().y].get_pierre() == good){	
 			lib += territoire_rec(cases[d.get_position().x-1][d.get_position().y],good);	
 		}
 		
-		if (d.get_position().x<size.x+1 && !cases[d.get_position().x+1][d.get_position().y].get_marque() && cases[d.get_position().x+1][d.get_position().y].get_pierre() == good){				
+		if (d.get_position().x+1 < size.x+1 && !cases[d.get_position().x+1][d.get_position().y].get_marque() && cases[d.get_position().x+1][d.get_position().y].get_pierre() == good){				
 			lib += territoire_rec(cases[d.get_position().x+1][d.get_position().y],good);
 		}
 		
-		if (d.get_position().y<size.y+1 && !cases[d.get_position().x][d.get_position().y+1].get_marque() && cases[d.get_position().x][d.get_position().y+1].get_pierre() == good){				
+		if (d.get_position().y+1<size.y+1 && !cases[d.get_position().x][d.get_position().y+1].get_marque() && cases[d.get_position().x][d.get_position().y+1].get_pierre() == good){				
 			lib += territoire_rec(cases[d.get_position().x][d.get_position().y+1],good);
 		}	
 		
-		/*if (lib == 0){
-			d.set_pierre(vide);
-		}*/
-		return lib;	
-		
+		return lib;			
 	}
 	
-	
+	//Focntion de calcul de libertée d'une pierre
 	public void actu_lib(Case x,int bady){
 		
 		int lib = 0;
 		
-		if (x.get_position().y>0 && cases[x.get_position().x][x.get_position().y-1].get_pierre() == vide){				
+		if (x.get_position().y-1>0 && cases[x.get_position().x][x.get_position().y-1].get_pierre() == vide){				
 			lib +=1;		
 		}
 		
-		if (x.get_position().x>0 && cases[x.get_position().x-1][x.get_position().y].get_pierre() == vide){	
+		if (x.get_position().x-1>0 && cases[x.get_position().x-1][x.get_position().y].get_pierre() == vide){	
 			lib +=1;	
 		}
 		
-		if (x.get_position().x<size.x+1 && cases[x.get_position().x+1][x.get_position().y].get_pierre() == vide){				
+		if (x.get_position().x+1<size.x+1 && cases[x.get_position().x+1][x.get_position().y].get_pierre() == vide){				
 			lib +=1;
 		}
 		
-		if (x.get_position().y<size.y+1 && cases[x.get_position().x][x.get_position().y+1].get_pierre() == vide){				
+		if (x.get_position().y+1<size.y+1 && cases[x.get_position().x][x.get_position().y+1].get_pierre() == vide){				
 			lib +=1;
 		}
 		
@@ -165,8 +150,6 @@ public class Plateau extends JComponent {
 		
 	}
 	
-	
-
 	
 	//Actualisation du visuel de la piece
 	public void update() {		
@@ -224,12 +207,14 @@ public class Plateau extends JComponent {
 		
 	}
 	
+	//Fonction qui donne la position de case corespondant a un x y donner
 	public Point find_point(int x,int y){
 		x += cx/2;
 		y += cy/2;		
 		return new Point((int)((x/cx)),(int)((y/cy)));
 	}
 	
+	//Fonction qui renvoi la case correspondant a un x y donner
 	public Case find_case(int x,int y){
 		Point tmp = find_point(x,y);
 		return cases[tmp.x][tmp.y];
@@ -248,11 +233,14 @@ public class Plateau extends JComponent {
 		return (int) (Math.random() * ((max+1) - min)) + min;
 	}	
 	
+	//Setter de la position du plateau
 	public void set_location(int x,int y){		
 		mx = x;
 		my = y;
 	}
 	
+	
+	//Setter de la position du curseur en therme de case
 	int play;
 	public void set_cursor(int x,int y,int p){		
 		if (x > -cx && y > -cy && x < size.x*cx+cx/2 & y < size.y*cy+cy/2){
