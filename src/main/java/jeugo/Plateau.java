@@ -89,7 +89,12 @@ public class Plateau extends JComponent {
 						for (int ii=0; ii < size.x+1; ii++) {
 							for (int jj=0; jj < size.y+1; jj++) {	
 								if (cases[ii][jj].get_marque()){
-									cases[ii][jj].set_pierre(vide);
+									cases[ii][jj].set_pierre(vide);									
+									if (c == blanc){
+										Game.score_blanc--;
+									}else if (c == noir){
+										Game.score_blanc--;
+									}
 								}
 							}
 						}									

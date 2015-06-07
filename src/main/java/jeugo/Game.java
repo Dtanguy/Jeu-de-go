@@ -44,8 +44,8 @@ public class Game implements MouseListener,MouseMotionListener{
 	//Autre informations
 	private int current_player;
 	private int handicape = 0;
-	private double score_blanc;
-	private double score_noir;
+	public static double score_blanc;
+	public static double score_noir;
 	private int victoire;
 	private int type;
 	
@@ -68,12 +68,7 @@ public class Game implements MouseListener,MouseMotionListener{
 		}else if (type == 1){
 			joueur1 = new Joueur(noir,false);
 			joueur2 = new Joueur(blanc,true);			
-		}else if (type == 2){
-			joueur1 = new Joueur(noir,true);
-			joueur2 = new Joueur(blanc,true);
-			actualise_player();
 		}		
-		
 	
 	}
 	
@@ -210,12 +205,10 @@ public class Game implements MouseListener,MouseMotionListener{
 	     //Décoration de la Frame
 		 frame.setUndecorated(true);
 	     frame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
-	     
-	    // frame.setLayout(new BorderLayout());
+	     	
 	     //Création du Panel
 	     pan = (JPanel) frame.getContentPane();	 	    
-	    // pan.setLayout(new FlowLayout());
-	     
+	    	     
 	     //On initialise le système de tour des joueurs et on l'affiche
 		 current_player = noir;	
 		 Font font = new Font("Vivaldi", Font.BOLD, 30);
@@ -272,9 +265,16 @@ public class Game implements MouseListener,MouseMotionListener{
 				if (victoire == 2){					
 					passe.setText("Quitter");
 					victoire = 10;
-					String info = "La partie est terminée\n"
-							    + "La victoire reiven au joueur blanc avec X point.\n"
+					String info;
+					if (score_blanc > score_noir){
+						info = "La partie est terminée\n"
+							    + "La victoire revien au joueur blanc avec "+ score_blanc +" point.\n"
 							    + " felicitation ! :)";
+					}else{
+						info = "La partie est terminée\n"
+							    + "La victoire revien au joueur noir avec "+ score_noir +" point.\n"
+							    + " felicitation ! :)";
+					}
 					javax.swing.JOptionPane.showMessageDialog(null,info); 
 				}				
 			 }
@@ -304,75 +304,34 @@ public class Game implements MouseListener,MouseMotionListener{
 			current_player = blanc;
 			player.setText("C'est au tour du joueur Blanc.");
 			
-
 			if (joueur2.get_color() == blanc && joueur2.get_type()){
-
 				
 				Case tmp;
 				do{					
 					 tmp = goban.cases[rnd(0, goban.size.x)][rnd(0, goban.size.y)];
 				}while(tmp.get_pierre() != vide);	
-									
-				
-				if (tmp.get_pierre() == vide){
 								
-					if (handicape > 1){
-						tmp.set_pierre(current_player);
-						handicape -=1;
-						player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
-					}else{				
+				if (tmp.get_pierre() == vide){
 						tmp.set_pierre(current_player);
 						goban.territoire(tmp);
 						actualise_player();		
 						victoire = 0;
-					}
-					
+						score_blanc++;
+					}					
 				}	
-
-				
-				
-			}
-			
-			
+			goban.update();
 			
 		}else if (current_player == blanc){
 			current_player = noir;
 			player.setText("C'est au tour du joueur Noir.");
 			
-			
-			
-			if (joueur1.get_color() == blanc && joueur1.get_type()){
-
-
-				
-				
-				Case tmp;
-				do{					
-					 tmp = goban.cases[rnd(0, goban.size.x)][rnd(0, goban.size.y)];
-				}while(tmp.get_pierre() != vide);	
-									
-				
-				if (tmp.get_pierre() == vide){
-								
-					if (handicape > 1){
-						tmp.set_pierre(current_player);
-						handicape -=1;
-						player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
-					}else{				
-						tmp.set_pierre(current_player);
-						goban.territoire(tmp);
-						actualise_player();		
-						victoire = 0;
-					}
-					
-				}	
-
-				goban.update();	
-				
-				
-			}
 		}
 		
+		
+		 //Score j1
+		 scoreblanc.setText("<html>Score des Blancs :<br> " + score_blanc + "  </html>");		
+		 //Score j2
+		 scorenoir.setText("<html>Score des Noirs :<br> " + score_noir + " </html>");		
 		
 		
 	}
@@ -398,18 +357,17 @@ public class Game implements MouseListener,MouseMotionListener{
 	//Detection des mouvements de la souris
 	public void mouseMoved(MouseEvent e) {		
 		if (joueur1.get_color() == current_player && joueur1.get_type()){
-					
-				}else if (joueur2.get_color() == current_player && joueur2.get_type()){
-					
-				}else{
+		}else if (joueur2.get_color() == current_player && joueur2.get_type()){					
+		}else{
 		
-					//Previsualisation du pion sur la plateau dans la case sous la souris
-					if (victoire < 2){
-						int x = e.getX() - goban.mx;
-						int y =	e.getY() - goban.my;
-						goban.set_cursor(x,y,current_player);		
-						goban.update();
-					}		
+			//Previsualisation du pion sur la plateau dans la case sous la souris
+			if (victoire < 2){
+				int x = e.getX() - goban.mx;
+				int y =	e.getY() - goban.my;
+				goban.set_cursor(x,y,current_player);		
+				goban.update();
+			}
+			
 		}
 		
 	}
@@ -435,7 +393,14 @@ public class Game implements MouseListener,MouseMotionListener{
 								tmp.set_pierre(current_player);
 								handicape -=1;
 								player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
-							}else{				
+							}else{		
+								
+								if (current_player == blanc){
+									score_blanc++;
+								}else if (current_player == noir){
+									score_noir++;
+								}
+								
 								tmp.set_pierre(current_player);
 								goban.territoire(tmp);
 								actualise_player();		
