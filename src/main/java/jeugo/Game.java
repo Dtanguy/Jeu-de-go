@@ -2,18 +2,27 @@ package jeugo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+
 
 //Listener des événements souris
 public class Game implements MouseListener,MouseMotionListener{
@@ -27,6 +36,7 @@ public class Game implements MouseListener,MouseMotionListener{
 	private Plateau goban;	
 	private JLabel player;
 	private JButton passe;
+	private JButton save;
 	private JLabel scoreblanc;
 	private JLabel scorenoir;
 	
@@ -43,28 +53,139 @@ public class Game implements MouseListener,MouseMotionListener{
 	private int noir = 2;
 	
 	public Game(int sx,int sy,int handi){	
+		Initialisation(sx,sy,handi);
+	}
+	
+	public Game(String file){	
+		
+		//On cherche les information sur la sauvegarde
+		int sx=0;
+		int sy=0; 		
+			
+		File partie = new File(file);
+		Scanner scanner;	
+		
+		//nombre de ligne sy et d ecolone sx
+		try {			
+			
+			scanner = new Scanner(partie);
+			sx = scanner.nextLine().length();
+			 while (scanner.hasNextLine()) {
+				 sy +=1; 
+				 scanner.nextLine();
+           }
+		} catch (Exception e) {
+			e.printStackTrace();
+			javax.swing.JOptionPane.showMessageDialog(null,	"Le fichier partie.txt ne peut être ouvert :'(");
+			System.exit(0);
+		}
+				
+		Initialisation(sx-1,sy-1,0);		
+
+		//On lit les valeurs des case
+		try {
+			
+			scanner = new Scanner(partie);
+			
+			for (int i=0; i < sy; i++) {
+				
+				 
+				 String tmp = scanner.nextLine();
+				 
+				 for (int j=0; j < tmp.length();j++){
+					
+					 if(tmp.charAt(j) == 'b'){
+						 goban.cases[j][i].set_pierre(blanc);
+					 }else if(tmp.charAt(j) == 'N'){
+						 goban.cases[j][i].set_pierre(noir);
+					 }else if(tmp.charAt(j) == 32){
+						 goban.cases[j][i].set_pierre(vide);
+					 }
+                     
+                 }
+				
+			}	
+			
+			char tmp[] = scanner.next().toCharArray();			
+		
+			if(tmp[0] == 'b'){
+				current_player = blanc;
+				player.setText("C'est au tour du joueur Blanc.");
+			}else if(tmp[0] == 'N'){
+				current_player = noir;
+				player.setText("C'est au tour du joueur Noir.");
+			}
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			javax.swing.JOptionPane.showMessageDialog(null,	"Le fichier " + file +" ne peut être ouvert :'(");
+			System.exit(0);
+		}
+
+	}
+	
+
+	public void save(String file){
+		
+		try{
+			
+			FileWriter scoreFile = new FileWriter(file, false);
+			
+			for (int i=0; i < goban.size.y+1; i++) {
+				for (int j=0; j < goban.size.x+1; j++) {
+					
+					if(goban.cases[j][i].get_pierre() == vide ){
+						scoreFile.write(' ');						
+					}else if(goban.cases[j][i].get_pierre() == blanc ){
+						scoreFile.write('b');								
+					}else if(goban.cases[j][i].get_pierre() == noir ){
+						scoreFile.write('N');								
+					}	
+					
+				}
+				scoreFile.write("\n");
+			}
+			
+			
+			if(current_player == blanc ){
+				scoreFile.write('b');								
+			}else if(current_player == noir ){
+				scoreFile.write('N');								
+			}	
+			
+			scoreFile.close();			
+
+		} catch (Exception e){
+			e.printStackTrace();
+			javax.swing.JOptionPane.showMessageDialog(null,	"Impossible d'écrire dans " + file +" :'(");
+			System.exit(0);
+		}
+		
+	}
+	
+	public void Initialisation(int sx,int sy,int handi){
 		
 		 //Creation et paramètrage de la Frame
 		 frame = new JFrame("Jeu de Go  | Partie");	        
 	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  	    
-	     frame.setSize(590, 650);
+	     frame.setSize(590, 670);
 	     frame.setLocationRelativeTo(null);
 	     
 	     //Décoration de la Frame
 		 frame.setUndecorated(true);
 	     frame.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
 	     
-	     frame.setLayout(new BorderLayout());;
-	     
+	    // frame.setLayout(new BorderLayout());
 	     //Création du Panel
-	     pan = (JPanel) frame.getContentPane();	 
+	     pan = (JPanel) frame.getContentPane();	 	    
+	    // pan.setLayout(new FlowLayout());
 	     
 	     //On initialise le système de tour des joueurs et on l'affiche
 		 current_player = noir;	
 		 Font font = new Font("Vivaldi", Font.BOLD, 30);
 		 player = new JLabel("",JLabel.CENTER);
 		 player.setFont(font);		
-		 player.setBounds(35,5,500,80);
+		 player.setBounds(35,30,500,80);
 		 pan.add(player);
 		 
 		 handicape = handi;
@@ -88,12 +209,12 @@ public class Game implements MouseListener,MouseMotionListener{
 		 
 		 //Score j1
 		 scoreblanc = new JLabel("<html>Score des Blancs :<br> " + score_blanc + "  </html>");
-		 scoreblanc.setBounds(45, 530, 200, 30);		
+		 scoreblanc.setBounds(45, 565, 200, 30);		
 		 pan.add(scoreblanc,BorderLayout.SOUTH);
 		 
 		 //Score j2
 		 scorenoir = new JLabel("<html>Score des Noirs :<br> " + score_noir + " </html>");
-		 scorenoir.setBounds(430, 530, 200, 30);		
+		 scorenoir.setBounds(430, 565, 200, 30);		
 		 pan.add(scorenoir,BorderLayout.SOUTH);
 	
 		 //Bouton passer son tour
@@ -122,8 +243,19 @@ public class Game implements MouseListener,MouseMotionListener{
 				}				
 			 }
 		 });	
-		 passe.setBounds(100, 600, 100, 30);
+		 passe.setBounds(0, 600, 100, 30);
 		 pan.add(passe,BorderLayout.SOUTH);
+		 
+		 //Bouton sauvegarder
+	     save = new JButton("Sauvegarder dans partie.txt");	
+	     save.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent arg0) {
+				 save("ressource/partie.txt");
+			 }
+		 });	
+	     save.setBounds(430, 530, 200, 30);	
+		 frame.add(save,BorderLayout.NORTH);
+		 
 		 
 		 //On rend la fenêtre visible
 		 frame.setVisible(true);
@@ -144,6 +276,14 @@ public class Game implements MouseListener,MouseMotionListener{
 	public static Game getInstance(int sx,int sy,int handi){
 		if (instance == null){
 			instance = new Game(sx, sy,handi);
+		} else if (instance != null){
+			return null;
+		}
+		return instance;
+	}
+	public static Game getInstance(String file){
+		if (instance == null){
+			instance = new Game(file);
 		} else if (instance != null){
 			return null;
 		}

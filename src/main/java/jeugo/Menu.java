@@ -29,13 +29,14 @@ public class Menu {
 	private JSpinner sx;
 	private JSpinner sy;
 	private JButton start;
+	private JButton charger;
 	
 	public Menu() {		
 		
 		//Création et paramètrage de la Frame
 		frame = new JFrame("Jeu de Go | Menu");	        
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  	    
-	    frame.setSize(300, 370);
+	    frame.setSize(300, 390);
 	    frame.setLocationRelativeTo(null);
 	    
 	    //Décoration de la Frame
@@ -75,8 +76,8 @@ public class Menu {
 	    //Choix de la taille du plateau avec des Spinner
 	    txt2 = new JLabel("Dimention du plateau :");
 	    txt2.setBounds(45, 160, 200, 30);		
-	    SpinnerNumberModel model1 = new SpinnerNumberModel(19, 1, 30, 1);  
-	    SpinnerNumberModel model2 = new SpinnerNumberModel(19, 1, 30, 1); 
+	    SpinnerNumberModel model1 = new SpinnerNumberModel(19, 1, 19, 1);  
+	    SpinnerNumberModel model2 = new SpinnerNumberModel(19, 1, 19, 1); 
 		sx = new JSpinner(model1);		
 		sx.setBounds(80, 210, 50, 30);
 		sy = new JSpinner(model2);
@@ -97,8 +98,20 @@ public class Menu {
 		    	frame.dispose();
 		    }
 		});		
-		start.setBounds(45, 280, 200, 30);
+		start.setBounds(45, 270, 200, 30);
 		pan.add(start);
+		
+		//Bouton lancer la partie
+		charger = new JButton("Charger depuis partie.txt");	
+		charger.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//On lance le 2eme constructeur de game avec en parametre le fichier txt
+				Game.getInstance("ressource/partie.txt");	
+				frame.dispose();
+			}
+		});		
+		charger.setBounds(45, 310, 200, 30);
+		pan.add(charger);
 		
 		//On rend le tout visible
 		frame.setVisible(true);  
