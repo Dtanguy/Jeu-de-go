@@ -31,6 +31,9 @@ public class Menu {
 	private JButton start;
 	private JButton charger;
 	
+	//Variable
+	private int type_var;
+	
 	public Menu() {		
 		
 		//Création et paramètrage de la Frame
@@ -52,7 +55,7 @@ public class Menu {
 	    txt1 = new JLabel("Type de partie :");
 	    txt1.setBounds(45, 10, 200, 30);		
 	    type=new CheckboxGroup(); 
-	    Checkbox box1=new Checkbox("Joueur contre Joueur",type,true); 
+	    final Checkbox box1=new Checkbox("Joueur contre Joueur",type,true); 
 	    box1.setBounds(50,50, 140, 20);
 	    
 	    txthandi = new JLabel("Nombre de handicap ?");
@@ -62,9 +65,9 @@ public class Menu {
 	    handi = new JSpinner(model);		
 	    handi.setBounds(200,51, 50, 30);
 	    
-	    Checkbox box2=new Checkbox("Joueur contre IA",type,false); 
+	    final Checkbox box2=new Checkbox("Joueur contre IA",type,false); 
 	    box2.setBounds(85,90,200, 30);	    
-	    Checkbox box3=new Checkbox("IA contre IA",type,false); 
+	    final Checkbox box3=new Checkbox("IA contre IA",type,false); 
 	    box3.setBounds(100,120, 200, 30);	
 	    pan.add(txt1);
 	    pan.add(box1);
@@ -90,11 +93,21 @@ public class Menu {
 		start = new JButton("Nouvelle partie");	
 		start.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
+		    	
 		    	int v1 = (Integer)sx.getValue()-1;
 		    	int v2 = (Integer)sy.getValue()-1;	
-		    	int hand = (Integer)handi.getValue();
-		    	//On créé ou o nrecupere une instance de Game avec les parametre de taille du plateau
-		    	Game.getInstance(v1,v2,hand);	
+		    	int hand = 0;
+		    	
+		    	if (box1.getState()){		    		
+		    		hand = (Integer)handi.getValue();
+			    	type_var = 0;
+		    	}else if (box2.getState()){	
+		    		type_var = 1;
+		    	}else if (box3.getState()){	
+		    		type_var = 2;
+		    	}		    	
+		    	
+		    	Game.getInstance(v1,v2,hand,type_var);		    	
 		    	frame.dispose();
 		    }
 		});		

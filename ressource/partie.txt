@@ -1,20 +1,20 @@
-NbN b  Nb N bN b Nb
+N                 N
                    
-                  N
-                  b
-                  N
                    
-                  b
                    
-                  N
                    
-                  b
                    
-                  N
-                  b
                    
-                  N
-                  b
-                  N
-                  b
+       N   b       
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+b                 b
 N

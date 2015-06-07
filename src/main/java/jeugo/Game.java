@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -46,17 +47,26 @@ public class Game implements MouseListener,MouseMotionListener{
 	private double score_blanc;
 	private double score_noir;
 	private int victoire;
+	private int type;
 	
 	//Couleur des pions	
 	private int vide = 0;
 	private int blanc = 1;
 	private int noir = 2;
 	
-	public Game(int sx,int sy,int handi){	
-		Initialisation(sx,sy,handi);
+	public Game(int sx,int sy,int handi,int type){	
+		Initialisation(sx,sy,handi);		
+		type = this.type;
 	}
 	
-	public Game(String file){	
+	public Game(String file){			
+		Point size = load_plateau(file);		
+		Initialisation(size.x-1,size.y-1,0);		
+		load_pierre(file,size.x,size.y);
+	}
+	
+	
+	public Point load_plateau(String file){
 		
 		//On cherche les information sur la sauvegarde
 		int sx=0;
@@ -80,8 +90,15 @@ public class Game implements MouseListener,MouseMotionListener{
 			System.exit(0);
 		}
 				
-		Initialisation(sx-1,sy-1,0);		
-
+		return new Point(sx,sy);
+		
+	}
+	
+	public void load_pierre(String file,int sx, int sy){
+		
+		File partie = new File(file);
+		Scanner scanner;	
+		
 		//On lit les valeurs des case
 		try {
 			
@@ -121,9 +138,7 @@ public class Game implements MouseListener,MouseMotionListener{
 			javax.swing.JOptionPane.showMessageDialog(null,	"Le fichier " + file +" ne peut être ouvert :'(");
 			System.exit(0);
 		}
-
 	}
-	
 
 	public void save(String file){
 		
@@ -273,9 +288,9 @@ public class Game implements MouseListener,MouseMotionListener{
 	}
 	
 	//Singleton pour éviter de lancer le jeu plusieurs fois
-	public static Game getInstance(int sx,int sy,int handi){
+	public static Game getInstance(int sx,int sy,int handi,int type){
 		if (instance == null){
-			instance = new Game(sx, sy,handi);
+			instance = new Game(sx, sy,handi,type);
 		} else if (instance != null){
 			return null;
 		}
