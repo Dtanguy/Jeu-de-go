@@ -217,7 +217,11 @@ public class Plateau extends JComponent {
 	//Fonction qui renvoie la case correspondant a un x y donné
 	public Case find_case(int x,int y){
 		Point tmp = find_point(x,y);
-		return cases[tmp.x][tmp.y];
+		if (tmp.x >= 0  && tmp.x <= size.x && tmp.y >= 0  && tmp.y <= size.y){
+			return cases[tmp.x][tmp.y];
+		}else{
+			return null;
+		}
 	}
 	
 	//Fonction qui dessine l'image donnée en paramètre sur le Jcomponent a l'emplassement et a la size donnée
