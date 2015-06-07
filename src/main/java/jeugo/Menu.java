@@ -66,15 +66,15 @@ public class Menu {
 	    handi.setBounds(200,51, 50, 30);
 	    
 	    final Checkbox box2=new Checkbox("Joueur contre IA",type,false); 
-	    box2.setBounds(85,90,200, 30);	    
-	    final Checkbox box3=new Checkbox("IA contre IA",type,false); 
-	    box3.setBounds(100,120, 200, 30);	
+	    box2.setBounds(85,105,200, 30);	    
+	   /* final Checkbox box3=new Checkbox("IA contre IA",type,false); 
+	    box3.setBounds(100,120, 200, 30);	*/
 	    pan.add(txt1);
 	    pan.add(box1);
 	    pan.add(txthandi);
 	    pan.add(handi);
 	    pan.add(box2); 
-	    pan.add(box3);	
+	   // pan.add(box3);	
 	    
 	    //Choix de la taille du plateau avec des Spinner
 	    txt2 = new JLabel("Dimention du plateau :");
@@ -103,8 +103,8 @@ public class Menu {
 			    	type_var = 0;
 		    	}else if (box2.getState()){	
 		    		type_var = 1;
-		    	}else if (box3.getState()){	
-		    		type_var = 2;
+		    	/*}else if (box3.getState()){	
+		    		type_var = 2;*/
 		    	}		    	
 		    	
 		    	Game.getInstance(v1,v2,hand,type_var);		    	

@@ -54,15 +54,36 @@ public class Game implements MouseListener,MouseMotionListener{
 	private int blanc = 1;
 	private int noir = 2;
 	
-	public Game(int sx,int sy,int handi,int type){	
+	//Joueur
+	private Joueur joueur1;
+	private Joueur joueur2;
+	
+	public Game(int sx,int sy,int handi,int typ){	
 		Initialisation(sx,sy,handi);		
-		type = this.type;
+		type = typ;
+		
+		if (type == 0){
+			joueur1 = new Joueur(noir,false);
+			joueur2 = new Joueur(blanc,false);
+		}else if (type == 1){
+			joueur1 = new Joueur(noir,false);
+			joueur2 = new Joueur(blanc,true);			
+		}else if (type == 2){
+			joueur1 = new Joueur(noir,true);
+			joueur2 = new Joueur(blanc,true);
+			actualise_player();
+		}		
+		
+	
 	}
 	
 	public Game(String file){			
 		Point size = load_plateau(file);		
 		Initialisation(size.x-1,size.y-1,0);		
 		load_pierre(file,size.x,size.y);
+		
+		joueur1 = new Joueur(noir,false);
+		joueur2 = new Joueur(blanc,false);
 	}
 	
 	
@@ -277,14 +298,83 @@ public class Game implements MouseListener,MouseMotionListener{
 	}
 	
 	//Fonction qui gère le systeme de tour des joueurs et on l'affiche
-	private void actualise_player(){		
+	private void actualise_player(){				
+		
 		if (current_player == noir){
 			current_player = blanc;
 			player.setText("C'est au tour du joueur Blanc.");
+			
+
+			if (joueur2.get_color() == blanc && joueur2.get_type()){
+
+				
+				Case tmp;
+				do{					
+					 tmp = goban.cases[rnd(0, goban.size.x)][rnd(0, goban.size.y)];
+				}while(tmp.get_pierre() != vide);	
+									
+				
+				if (tmp.get_pierre() == vide){
+								
+					if (handicape > 1){
+						tmp.set_pierre(current_player);
+						handicape -=1;
+						player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
+					}else{				
+						tmp.set_pierre(current_player);
+						goban.territoire(tmp);
+						actualise_player();		
+						victoire = 0;
+					}
+					
+				}	
+
+				
+				
+			}
+			
+			
+			
 		}else if (current_player == blanc){
 			current_player = noir;
 			player.setText("C'est au tour du joueur Noir.");
+			
+			
+			
+			if (joueur1.get_color() == blanc && joueur1.get_type()){
+
+
+				
+				
+				Case tmp;
+				do{					
+					 tmp = goban.cases[rnd(0, goban.size.x)][rnd(0, goban.size.y)];
+				}while(tmp.get_pierre() != vide);	
+									
+				
+				if (tmp.get_pierre() == vide){
+								
+					if (handicape > 1){
+						tmp.set_pierre(current_player);
+						handicape -=1;
+						player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
+					}else{				
+						tmp.set_pierre(current_player);
+						goban.territoire(tmp);
+						actualise_player();		
+						victoire = 0;
+					}
+					
+				}	
+
+				goban.update();	
+				
+				
+			}
 		}
+		
+		
+		
 	}
 	
 	//Singleton pour éviter de lancer le jeu plusieurs fois
@@ -307,39 +397,62 @@ public class Game implements MouseListener,MouseMotionListener{
 
 	//Detection des mouvements de la souris
 	public void mouseMoved(MouseEvent e) {		
-		//Previsualisation du pion sur la plateau dans la case sous la souris
-		if (victoire < 2){
-			int x = e.getX() - goban.mx;
-			int y =	e.getY() - goban.my;
-			goban.set_cursor(x,y,current_player);		
-			goban.update();
+		if (joueur1.get_color() == current_player && joueur1.get_type()){
+					
+				}else if (joueur2.get_color() == current_player && joueur2.get_type()){
+					
+				}else{
+		
+					//Previsualisation du pion sur la plateau dans la case sous la souris
+					if (victoire < 2){
+						int x = e.getX() - goban.mx;
+						int y =	e.getY() - goban.my;
+						goban.set_cursor(x,y,current_player);		
+						goban.update();
+					}		
 		}
+		
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		// On pause le pion dans la case sous la souris
-		if (victoire < 2){
-			int x = e.getX() - goban.mx;
-		    int y =	e.getY() - goban.my;
-			Case tmp = goban.find_case(x,y);
-			if (tmp != null){
-				if (tmp.get_pierre() == vide){
-								
-					if (handicape > 1){
-						tmp.set_pierre(current_player);
-						handicape -=1;
-						player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
-					}else{				
-						tmp.set_pierre(current_player);
-						goban.territoire(tmp);
-						actualise_player();		
-						victoire = 0;
-					}
+			
+		if (joueur1.get_color() == current_player && joueur1.get_type()){
+			
+		}else if (joueur2.get_color() == current_player && joueur2.get_type()){
+			
+		}else{
 					
-				}		
-				goban.update();	
-			}
+		
+				// On pause le pion dans la case sous la souris
+				if (victoire < 2){
+					int x = e.getX() - goban.mx;
+				    int y =	e.getY() - goban.my;
+					Case tmp = goban.find_case(x,y);
+					if (tmp != null){
+						if (tmp.get_pierre() == vide){
+										
+							if (handicape > 1){
+								tmp.set_pierre(current_player);
+								handicape -=1;
+								player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
+							}else{				
+								tmp.set_pierre(current_player);
+								goban.territoire(tmp);
+								actualise_player();		
+								victoire = 0;
+							}
+							
+						}		
+						goban.update();	
+					}
+				}
+		
 		}
+	}
+	
+	// nombre aleatoire entre MIN et MAx
+	private int rnd(int min, int max) {
+		return (int) (Math.random() * (max - min)) + min;
 	}
 
 	public void mouseClicked(MouseEvent e) {
