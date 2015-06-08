@@ -28,8 +28,6 @@ import javax.swing.JRootPane;
 //Listener des événements souris
 public class Game implements MouseListener,MouseMotionListener{
 
-	//Instance pour le singleton
-	private static Game	instance;	
 	
 	//Object de la partie
 	private JFrame frame;
@@ -336,24 +334,6 @@ public class Game implements MouseListener,MouseMotionListener{
 		
 	}
 	
-	//Singleton pour éviter de lancer le jeu plusieurs fois
-	public static Game getInstance(int sx,int sy,int handi,int type){
-		if (instance == null){
-			instance = new Game(sx, sy,handi,type);
-		} else if (instance != null){
-			return null;
-		}
-		return instance;
-	}
-	public static Game getInstance(String file){
-		if (instance == null){
-			instance = new Game(file);
-		} else if (instance != null){
-			return null;
-		}
-		return instance;
-	}
-
 	//Detection des mouvements de la souris
 	public void mouseMoved(MouseEvent e) {		
 		if (joueur1.get_color() == current_player && joueur1.get_type()){

@@ -15,9 +15,6 @@ import javax.swing.SpinnerNumberModel;
 
 public class Menu {
 	
-	//Instance pour le singleton
-	private static Menu instance;
-	
 	//Object du menu
 	private JFrame frame;
 	private JPanel pan;
@@ -103,7 +100,7 @@ public class Menu {
 		    		type_var = 1;		    	
 		    	}		    	
 		    	
-		    	Game.getInstance(v1,v2,hand,type_var);		    	
+		    	new Game(v1,v2,hand,type_var);		    	
 		    	frame.dispose();
 		    }
 		});		
@@ -115,7 +112,7 @@ public class Menu {
 		charger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//On lance le 2eme constructeur de game avec en parametre le fichier txt
-				Game.getInstance("ressource/partie.txt");	
+				new Game("ressource/partie.txt");	
 				frame.dispose();
 			}
 		});		
@@ -125,15 +122,6 @@ public class Menu {
 		//On rend le tout visible
 		frame.setVisible(true);  
 	}
-	
-	//Singleton pour éviter de lancer le menu plusieurs fois
-	public static Menu getInstance(){
-		if (instance == null){
-			instance = new Menu();
-		} else if (instance != null){
-			return null;
-		}
-		return instance;
-	}
+
 	
 }
