@@ -302,7 +302,7 @@ public class Game implements MouseListener,MouseMotionListener{
 			tmp = goban.cases[rnd(0, goban.size.x)][rnd(0, goban.size.y)];
 		}while(tmp.get_pierre() != vide);
 				
-		//try{
+		try{
 		
 			Case min_case = tmp;
 			int x = -1;
@@ -369,9 +369,9 @@ public class Game implements MouseListener,MouseMotionListener{
 				}	
 			}
 		
-		/*} catch (Exception e){
+		} catch (Exception e){
 			e.printStackTrace();
-		}*/
+		}
 				
 		if (tmp.get_pierre() == vide){
 			tmp.set_pierre(current_player);
