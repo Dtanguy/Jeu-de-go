@@ -295,6 +295,96 @@ public class Game implements MouseListener,MouseMotionListener{
 		 frame.setVisible(true);
 	}
 	
+	private void IA(){
+			
+		Case tmp;
+		do{							
+			tmp = goban.cases[rnd(0, goban.size.x)][rnd(0, goban.size.y)];
+		}while(tmp.get_pierre() != vide);
+				
+		//try{
+		
+			Case min_case = tmp;
+			int x = -1;
+			int y = -1;
+			
+			for (int i=0; i < goban.size.x+1; i++) {
+				for (int j=0; j < goban.size.y+1; j++) {
+					if (goban.cases[i][j].get_pierre() == noir){	
+							
+						goban.actu_lib(goban.cases[i][j]);
+							
+						if (goban.cases[i][j].get_liberte() < min_case.get_liberte() && goban.cases[i][j].get_liberte() > 0){
+							min_case = goban.cases[i][j];
+							x = i;
+							y = j;
+						}						
+							
+					}
+				}
+			}	
+			
+			System.out.println(x + " " + y + " " + goban.cases[x][y].get_liberte());
+				
+			
+			if(x-1 > 0 && goban.cases[x-1][y].get_pierre() == vide){	
+				goban.actu_lib(goban.cases[x-1][y]);
+				if (goban.cases[x-1][y].get_liberte() > 0){			
+					tmp = goban.cases[x-1][y];
+				}
+			}else if(x+1 < goban.size.x+1 && goban.cases[x+1][y].get_pierre() == vide){	
+				goban.actu_lib(goban.cases[x+1][y]);
+				if (goban.cases[x+1][y].get_liberte() > 0){			
+					tmp = goban.cases[x+1][y];
+				}			
+			}else if(y-1 > 0 && goban.cases[x][y-1].get_pierre() == vide){	
+				goban.actu_lib(goban.cases[x][y-1]);
+				if (goban.cases[x][y-1].get_liberte() > 0){			
+					tmp = goban.cases[x][y-1];
+				}	
+			}else if(y+1 < goban.size.y+1 && goban.cases[x][y+1].get_pierre() == vide){
+				goban.actu_lib(goban.cases[x][y+1]);
+				if (goban.cases[x][y+1].get_liberte() > 0){			
+					tmp = goban.cases[x][y+1];
+				}
+			}else if(x-1 > 0 && y-1 > 0 && goban.cases[x-1][y-1].get_pierre() == vide){			
+				goban.actu_lib(goban.cases[x-1][y-1]);
+				if (goban.cases[x-1][y-1].get_liberte() > 0){			
+					tmp = goban.cases[x-1][y-1];
+				}
+			}else if(x-1 > 0 && y+1 < goban.size.y+1 && goban.cases[x-1][y+1].get_pierre() == vide){	
+				goban.actu_lib(goban.cases[x-1][y+1]);
+				if (goban.cases[x-1][y+1].get_liberte() > 0){			
+					tmp = goban.cases[x-1][y+1];
+				}
+			}else if(x+1 < goban.size.x+1 && y+1 < goban.size.y+1 && goban.cases[x+1][y-1].get_pierre() == vide){	
+				goban.actu_lib(goban.cases[x+1][y-1]);
+				if (goban.cases[x+1][y-1].get_liberte() > 0){			
+					tmp = goban.cases[x+1][y-1];
+				}			
+			}else if(x+1 < goban.size.x+1 && y+1 < goban.size.y+1 && goban.cases[x+1][y+1].get_pierre() == vide){			
+				goban.actu_lib(goban.cases[x+1][y+1]);
+				if (goban.cases[x+1][y+1].get_liberte() > 0){			
+					tmp = goban.cases[x+1][y+1];
+				}	
+			}
+		
+		/*} catch (Exception e){
+			e.printStackTrace();
+		}*/
+				
+		if (tmp.get_pierre() == vide){
+			tmp.set_pierre(current_player);
+			goban.territoire(tmp);
+			actualise_player();		
+			victoire = 0;
+			score_blanc++;
+		}					
+				
+		goban.update();	
+		
+	}
+	
 	//Fonction qui gère le systeme de tour des joueurs et on l'affiche
 	private void actualise_player(){				
 		
@@ -302,27 +392,14 @@ public class Game implements MouseListener,MouseMotionListener{
 			current_player = blanc;
 			player.setText("C'est au tour du joueur Blanc.");
 			
+			//IA
 			if (joueur2.get_color() == blanc && joueur2.get_type()){
-				
-				Case tmp;
-				do{					
-					 tmp = goban.cases[rnd(0, goban.size.x)][rnd(0, goban.size.y)];
-				}while(tmp.get_pierre() != vide);	
-								
-				if (tmp.get_pierre() == vide){
-						tmp.set_pierre(current_player);
-						goban.territoire(tmp);
-						actualise_player();		
-						victoire = 0;
-						score_blanc++;
-					}					
-				}	
-			goban.update();
-			
+				IA();
+			}
+						
 		}else if (current_player == blanc){
 			current_player = noir;
 			player.setText("C'est au tour du joueur Noir.");
-			
 		}
 		
 		

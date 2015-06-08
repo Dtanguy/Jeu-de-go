@@ -67,7 +67,7 @@ public class Plateau extends JComponent {
 		for (int i=0; i < size.x+1; i++) {
 			for (int j=0; j < size.y+1; j++) {
 				if (cases[i][j].get_pierre() == c){										
-					actu_lib(cases[i][j],start.get_pierre());
+					actu_lib(cases[i][j]);
 				}
 			}
 		}	
@@ -93,7 +93,7 @@ public class Plateau extends JComponent {
 									if (c == blanc){
 										Game.score_blanc--;
 									}else if (c == noir){
-										Game.score_blanc--;
+										Game.score_noir--;
 									}
 								}
 							}
@@ -131,7 +131,7 @@ public class Plateau extends JComponent {
 	}
 	
 	//Fonction de calcul de libertée d'une pierre
-	public void actu_lib(Case x,int bady){
+	public void actu_lib(Case x){
 		
 		int lib = 0;
 		

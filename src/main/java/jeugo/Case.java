@@ -11,7 +11,7 @@ public class Case {
 	//Présence ou non d'une marque dessus (sert pour le parcour de territoire)
 	private boolean marque;
 	//Nombre de libertées de la case
-	private int liberte;
+	private int liberte=5;
 		
 	//Constructeur avec en paramètre l'état (noir, blanc, vide) et la position
 	public Case(int s,int x,int y) {
