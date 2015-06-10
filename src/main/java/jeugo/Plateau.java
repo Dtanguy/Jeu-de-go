@@ -111,11 +111,11 @@ public class Plateau extends JComponent {
 		d.set_marque();
 		int lib = d.get_liberte();
 		
-		if (d.get_position().y-1>0 && !cases[d.get_position().x][d.get_position().y-1].get_marque() && cases[d.get_position().x][d.get_position().y-1].get_pierre() == good){				
+		if (d.get_position().y-1>=0 && !cases[d.get_position().x][d.get_position().y-1].get_marque() && cases[d.get_position().x][d.get_position().y-1].get_pierre() == good){				
 			lib += territoire_rec(cases[d.get_position().x][d.get_position().y-1],good);		
 		}
 		
-		if (d.get_position().x-1>0 && !cases[d.get_position().x-1][d.get_position().y].get_marque() && cases[d.get_position().x-1][d.get_position().y].get_pierre() == good){	
+		if (d.get_position().x-1>=0 && !cases[d.get_position().x-1][d.get_position().y].get_marque() && cases[d.get_position().x-1][d.get_position().y].get_pierre() == good){	
 			lib += territoire_rec(cases[d.get_position().x-1][d.get_position().y],good);	
 		}
 		
@@ -135,11 +135,11 @@ public class Plateau extends JComponent {
 		
 		int lib = 0;
 		
-		if (x.get_position().y-1>0 && cases[x.get_position().x][x.get_position().y-1].get_pierre() == vide){				
+		if (x.get_position().y-1>=0 && cases[x.get_position().x][x.get_position().y-1].get_pierre() == vide){				
 			lib +=1;		
 		}
 		
-		if (x.get_position().x-1>0 && cases[x.get_position().x-1][x.get_position().y].get_pierre() == vide){	
+		if (x.get_position().x-1>=0 && cases[x.get_position().x-1][x.get_position().y].get_pierre() == vide){	
 			lib +=1;	
 		}
 		
@@ -152,7 +152,7 @@ public class Plateau extends JComponent {
 		}
 		
 	    x.set_liberte(lib);
-		
+	    
 	}
 	
 	

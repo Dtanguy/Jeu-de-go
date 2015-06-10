@@ -445,23 +445,28 @@ public class Game implements MouseListener,MouseMotionListener{
 					Case tmp = goban.find_case(x,y);
 					if (tmp != null){
 						if (tmp.get_pierre() == vide){
+							
+							goban.actu_lib(tmp);
+							if (tmp.get_liberte() > 0){
 										
-							if (handicape > 1){
-								tmp.set_pierre(current_player);
-								handicape -=1;
-								player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
-							}else{		
-								
-								if (current_player == blanc){
-									score_blanc++;
-								}else if (current_player == noir){
-									score_noir++;
+								if (handicape > 1){
+									tmp.set_pierre(current_player);
+									handicape -=1;
+									player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
+								}else{		
+									
+									if (current_player == blanc){
+										score_blanc++;
+									}else if (current_player == noir){
+										score_noir++;
+									}
+									
+									tmp.set_pierre(current_player);
+									goban.territoire(tmp);
+									actualise_player();		
+									victoire = 0;
 								}
 								
-								tmp.set_pierre(current_player);
-								goban.territoire(tmp);
-								actualise_player();		
-								victoire = 0;
 							}
 							
 						}		
