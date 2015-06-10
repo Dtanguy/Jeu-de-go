@@ -401,10 +401,96 @@ public class Game implements MouseListener,MouseMotionListener{
 			current_player = noir;
 			player.setText("C'est au tour du joueur Noir.");
 		}
-		
+	
 		
 		 //Score j1
-		 scoreblanc.setText("<html>Score des Blancs :<br> " + score_blanc + "  </html>");		
+		int ter_b =0;
+		/*
+		for (int i=0; i < goban.size.x+1; i++) {
+			for (int j=0; j < goban.size.y+1; j++) {
+			
+						
+				for (int i=0; i < goban.size.x+1; i++) {
+					for (int j=0; j < goban.size.y+1; j++) {				
+						if (goban.cases[i][j].get_pierre() == c){
+												
+							//On enleve toutes les  marques des pierres que l'on vas parcourir
+							for (int ii=0; ii < goban.size.x+1; ii++) {
+								for (int jj=0; jj < goban.size.y+1; jj++) {	
+									goban.cases[ii][jj].unset_marque();
+								}
+							}
+							
+							//On utilise la fonction de parcourt recursive, si elle renvoie une libertée totale de 0
+							if (goban.territoire_rec(goban.cases[i][j],c) == 0){						
+								//Pour chaque pierre que cette focntion a marquée, on les suprime et on enleve la marque
+								for (int ii=0; ii < goban.size.x+1; ii++) {
+									for (int jj=0; jj < goban.size.y+1; jj++) {	
+										if (goban.cases[ii][jj].get_marque()){
+											goban.cases[ii][jj].set_pierre(vide);									
+											if (c == blanc){
+												Game.score_blanc--;
+											}else if (c == noir){
+												Game.score_noir--;
+											}
+										}
+									}
+								}									
+							}
+							
+							
+							
+							
+						}
+					}
+				}	
+				
+		
+		
+			}
+		}	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		for (int i=0; i < goban.size.x+1; i++) {
+			for (int j=0; j < goban.size.y+1; j++) {
+				if (goban.cases[i][j].get_pierre() == noir){	
+						
+					
+					goban.actu_lib(goban.cases[i][j]);
+						
+					if (goban.cases[i][j].get_liberte() < min_case.get_liberte() && goban.cases[i][j].get_liberte() > 0){
+						min_case = goban.cases[i][j];
+						x = i;
+						y = j;
+					}	
+					
+					
+						
+				}
+			}
+		}	
+		
+		*/
+		
+		 scoreblanc.setText("<html>Score des Blancs :<br> " + score_blanc+ter_b + "  </html>");		
 		 //Score j2
 		 scorenoir.setText("<html>Score des Noirs :<br> " + score_noir + " </html>");		
 		
@@ -446,8 +532,9 @@ public class Game implements MouseListener,MouseMotionListener{
 					if (tmp != null){
 						if (tmp.get_pierre() == vide){
 							
-							goban.actu_lib(tmp);
-							if (tmp.get_liberte() > 0){
+							goban.actu_lib(tmp);							
+							
+							if (tmp.get_liberte() + goban.nb_friend(tmp,current_player) > 0){
 										
 								if (handicape > 1){
 									tmp.set_pierre(current_player);

@@ -155,6 +155,31 @@ public class Plateau extends JComponent {
 	    
 	}
 	
+	//Fonction de calcul de libertée d'une pierre
+		public int nb_friend(Case x,int c){
+			
+			int friend = 0;
+			
+			if (x.get_position().y-1>=0 && cases[x.get_position().x][x.get_position().y-1].get_pierre() == c){				
+				friend +=1;		
+			}
+			
+			if (x.get_position().x-1>=0 && cases[x.get_position().x-1][x.get_position().y].get_pierre() == c){	
+				friend +=1;	
+			}
+			
+			if (x.get_position().x+1<size.x+1 && cases[x.get_position().x+1][x.get_position().y].get_pierre() == c){				
+				friend +=1;
+			}
+			
+			if (x.get_position().y+1<size.y+1 && cases[x.get_position().x][x.get_position().y+1].get_pierre() == c){				
+				friend +=1;
+			}
+			
+		    return friend;
+		    
+		}
+		
 	
 	//Actualisation du visuel de la piece
 	public void update() {		
