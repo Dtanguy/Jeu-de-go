@@ -404,93 +404,7 @@ public class Game implements MouseListener,MouseMotionListener{
 	
 		
 		 //Score j1
-		int ter_b =0;
-		/*
-		for (int i=0; i < goban.size.x+1; i++) {
-			for (int j=0; j < goban.size.y+1; j++) {
-			
-						
-				for (int i=0; i < goban.size.x+1; i++) {
-					for (int j=0; j < goban.size.y+1; j++) {				
-						if (goban.cases[i][j].get_pierre() == c){
-												
-							//On enleve toutes les  marques des pierres que l'on vas parcourir
-							for (int ii=0; ii < goban.size.x+1; ii++) {
-								for (int jj=0; jj < goban.size.y+1; jj++) {	
-									goban.cases[ii][jj].unset_marque();
-								}
-							}
-							
-							//On utilise la fonction de parcourt recursive, si elle renvoie une libertée totale de 0
-							if (goban.territoire_rec(goban.cases[i][j],c) == 0){						
-								//Pour chaque pierre que cette focntion a marquée, on les suprime et on enleve la marque
-								for (int ii=0; ii < goban.size.x+1; ii++) {
-									for (int jj=0; jj < goban.size.y+1; jj++) {	
-										if (goban.cases[ii][jj].get_marque()){
-											goban.cases[ii][jj].set_pierre(vide);									
-											if (c == blanc){
-												Game.score_blanc--;
-											}else if (c == noir){
-												Game.score_noir--;
-											}
-										}
-									}
-								}									
-							}
-							
-							
-							
-							
-						}
-					}
-				}	
-				
-		
-		
-			}
-		}	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		for (int i=0; i < goban.size.x+1; i++) {
-			for (int j=0; j < goban.size.y+1; j++) {
-				if (goban.cases[i][j].get_pierre() == noir){	
-						
-					
-					goban.actu_lib(goban.cases[i][j]);
-						
-					if (goban.cases[i][j].get_liberte() < min_case.get_liberte() && goban.cases[i][j].get_liberte() > 0){
-						min_case = goban.cases[i][j];
-						x = i;
-						y = j;
-					}	
-					
-					
-						
-				}
-			}
-		}	
-		
-		*/
-		
-		 scoreblanc.setText("<html>Score des Blancs :<br> " + score_blanc+ter_b + "  </html>");		
+		 scoreblanc.setText("<html>Score des Blancs :<br> " + score_blanc + "  </html>");		
 		 //Score j2
 		 scorenoir.setText("<html>Score des Noirs :<br> " + score_noir + " </html>");		
 		
@@ -532,30 +446,83 @@ public class Game implements MouseListener,MouseMotionListener{
 					if (tmp != null){
 						if (tmp.get_pierre() == vide){
 							
-							goban.actu_lib(tmp);							
+							//on compte le nb de piere ennemie
+							int nb_bad=0;
 							
-							if (tmp.get_liberte() + goban.nb_friend(tmp,current_player) > 0){
+								for (int i=0; i < goban.size.x+1; i++) {
+									for (int j=0; j < goban.size.y+1; j++) {
 										
-								if (handicape > 1){
-									tmp.set_pierre(current_player);
-									handicape -=1;
-									player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
-								}else{		
-									
-									if (current_player == blanc){
-										score_blanc++;
-									}else if (current_player == noir){
-										score_noir++;
+										if(current_player == blanc){
+											if (goban.cases[i][j].get_pierre() == noir){	
+												nb_bad++;												
+											}
+										}else{
+											if (goban.cases[i][j].get_pierre() == blanc){	
+												nb_bad++;												
+											}	
+										}
+										
 									}
-									
-									tmp.set_pierre(current_player);
-									goban.territoire(tmp);
-									actualise_player();		
-									victoire = 0;
 								}
 								
-							}
+
+							  tmp.set_pierre(current_player);
+							  goban.territoire(tmp);
 							
+							   //on compte le nb de piere ennemie
+								int nb_bad2=0;
+								
+									for (int i=0; i < goban.size.x+1; i++) {
+										for (int j=0; j < goban.size.y+1; j++) {
+											
+											if(current_player == blanc){
+												if (goban.cases[i][j].get_pierre() == noir){	
+													nb_bad2++;												
+												}
+											}else{
+												if (goban.cases[i][j].get_pierre() == blanc){	
+													nb_bad2++;												
+												}	
+											}
+											
+										}
+									}
+							
+									
+								if (nb_bad > nb_bad2){
+									actualise_player();		
+									victoire = 0;
+								}else{
+									 tmp.set_pierre(vide);
+									 
+									 goban.actu_lib(tmp);							
+										
+										if (tmp.get_liberte() + goban.nb_friend(tmp,current_player) > 0){
+													
+											if (handicape > 1){
+												tmp.set_pierre(current_player);
+												handicape -=1;
+												player.setText("<html>Le joueur aux pierre Noir <br> place les " + handicape + " handicape !</html>");
+											}else{		
+												
+												if (current_player == blanc){
+													score_blanc++;
+												}else if (current_player == noir){
+													score_noir++;
+												}
+												
+												tmp.set_pierre(current_player);
+												goban.territoire(tmp);
+												actualise_player();		
+												victoire = 0;
+											}
+											
+										}
+										
+										
+									 
+								}									
+															
 						}		
 						goban.update();	
 					}
